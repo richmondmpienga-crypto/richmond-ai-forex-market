@@ -1,3 +1,4 @@
+// Cloudflare auto-deploy test
 const APP_NAME = "Richmond AI Forex Market";
 
 document.addEventListener("DOMContentLoaded", () => {
