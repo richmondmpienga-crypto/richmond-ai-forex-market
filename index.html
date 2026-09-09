@@ -3,13 +3,249 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Richmond AI Forex Market</title>
+
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <h1>Richmond AI Forex Market</h1>
-  <p>AI-Powered Forex Market Scanner</p>
+
+  <header class="topbar">
+
+    <div class="brand">
+      <div class="brand-icon">R</div>
+
+      <div>
+        <h1>Richmond AI Forex Market</h1>
+        <p>AI-Powered Forex Market Scanner</p>
+      </div>
+    </div>
+
+    <div class="market-status">
+      <span class="live-dot"></span>
+      MARKET SCANNER
+    </div>
+
+  </header>
+
+
+  <main class="dashboard">
+
+    <section class="sessions-section">
+
+      <h2>Trading Sessions</h2>
+
+      <div class="session-grid">
+
+        <div class="session-card">
+          <span>Sydney</span>
+          <strong>AUD • NZD</strong>
+          <small>Session Monitor</small>
+        </div>
+
+        <div class="session-card">
+          <span>Tokyo</span>
+          <strong>JPY • AUD • NZD</strong>
+          <small>Session Monitor</small>
+        </div>
+
+        <div class="session-card">
+          <span>London</span>
+          <strong>GBP • EUR • CHF</strong>
+          <small>Session Monitor</small>
+        </div>
+
+        <div class="session-card">
+          <span>New York</span>
+          <strong>USD • CAD</strong>
+          <small>Session Monitor</small>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="scanner-section">
+
+      <div class="section-heading">
+
+        <div>
+          <h2>Forex Market Scanner</h2>
+          <p>Structure • Liquidity • Trend • Momentum • Volatility</p>
+        </div>
+
+        <button id="scanMarketBtn">
+          Scan Market
+        </button>
+
+      </div>
+
+
+      <div class="scanner-table-wrapper">
+
+        <table class="scanner-table">
+
+          <thead>
+            <tr>
+              <th>Pair</th>
+              <th>Trend</th>
+              <th>Structure</th>
+              <th>BOS / CHoCH</th>
+              <th>Liquidity</th>
+              <th>Order Block</th>
+              <th>Volatility</th>
+              <th>AI Score</th>
+              <th>Signal</th>
+            </tr>
+          </thead>
+
+          <tbody id="scannerBody">
+
+            <tr>
+              <td>EUR/USD</td>
+              <td>Waiting</td>
+              <td>Waiting</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>0</td>
+              <td class="wait">WAIT</td>
+            </tr>
+
+            <tr>
+              <td>GBP/USD</td>
+              <td>Waiting</td>
+              <td>Waiting</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>0</td>
+              <td class="wait">WAIT</td>
+            </tr>
+
+            <tr>
+              <td>USD/JPY</td>
+              <td>Waiting</td>
+              <td>Waiting</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>0</td>
+              <td class="wait">WAIT</td>
+            </tr>
+
+            <tr>
+              <td>XAU/USD</td>
+              <td>Waiting</td>
+              <td>Waiting</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>0</td>
+              <td class="wait">WAIT</td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <section class="lower-grid">
+
+      <div class="panel">
+
+        <h2>Technical Indicators</h2>
+
+        <div class="indicator-grid">
+
+          <div>
+            <span>EMA 20 / 50 / 200</span>
+            <strong>Waiting</strong>
+          </div>
+
+          <div>
+            <span>RSI</span>
+            <strong>Waiting</strong>
+          </div>
+
+          <div>
+            <span>MACD</span>
+            <strong>Waiting</strong>
+          </div>
+
+          <div>
+            <span>ADX</span>
+            <strong>Waiting</strong>
+          </div>
+
+          <div>
+            <span>ATR</span>
+            <strong>Waiting</strong>
+          </div>
+
+          <div>
+            <span>Bollinger Bands</span>
+            <strong>Waiting</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <h2>Economic Calendar</h2>
+
+        <div class="calendar-placeholder">
+          <strong>Upcoming High-Impact News</strong>
+
+          <p>
+            Economic calendar connection will appear here.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="ai-panel">
+
+      <div>
+        <h2>Richmond AI Analysis</h2>
+
+        <p id="aiAnalysis">
+          Select a currency pair or scan the market to begin analysis.
+        </p>
+      </div>
+
+      <div class="ai-score">
+        <span>SETUP SCORE</span>
+        <strong>0 / 100</strong>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    Richmond AI Forex Market • Scan • Analyse • Trade • Grow
+  </footer>
+
+
   <script src="script.js"></script>
+
 </body>
 </html>
