@@ -6,7 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const scanBtn = document.getElementById("scanMarketBtn");
   const scannerBody = document.getElementById("scannerBody");
   const aiAnalysis = document.getElementById("aiAnalysis");
-
+const emaValue = document.getElementById("emaValue");
+const rsiValue = document.getElementById("rsiValue");
+const macdValue = document.getElementById("macdValue");
+const adxValue = document.getElementById("adxValue");
+const atrValue = document.getElementById("atrValue");
+const bbValue = document.getElementById("bbValue");
   if (!scanBtn || !scannerBody) return;
 
   const sleep = (ms) =>
@@ -49,7 +54,118 @@ document.addEventListener("DOMContentLoaded", () => {
     const rs = gains / losses;
     return 100 - 100 / (1 + rs);
   }
+function calculateMACD(values) {
+  if (!values || values.length < 26) {
+    return { macd: 0, signal: 0, histogram: 0 };
+  }
 
+  const fast = ema(values, 12);
+  const slow = ema(values, 26);
+
+  const macd = fast - slow;
+
+  return {
+    macd,
+    signal: 0,
+    histogram: macd
+  };
+}
+
+function calculateATR(candles, period = 14) {
+  if (!candles || candles.length <= period) return 0;
+
+  let trueRanges = [];
+
+  for (let i = 1; i < candles.length; i++) {
+    const high = Number(candles[i].high);
+    const low = Number(candles[i].low);
+    const prevClose = Number(candles[i - 1].close);
+
+    const tr = Math.max(
+      high - low,
+      Math.abs(high - prevClose),
+      Math.abs(low - prevClose)
+    );
+
+    trueRanges.push(tr);
+  }
+
+  const recent = trueRanges.slice(-period);
+
+  return recent.reduce((a, b) => a + b, 0) / recent.length;
+}
+
+function calculateBollingerBands(values, period = 20, multiplier = 2) {
+  if (!values || values.length < period) {
+    return { upper: 0, middle: 0, lower: 0 };
+  }
+
+  const recent = values.slice(-period);
+
+  const middle =
+    recent.reduce((a, b) => a + b, 0) / period;
+
+  const variance =
+    recent.reduce((sum, value) => {
+      return sum + Math.pow(value - middle, 2);
+    }, 0) / period;
+
+  const deviation = Math.sqrt(variance);
+
+  return {
+    upper: middle + multiplier * deviation,
+    middle,
+    lower: middle - multiplier * deviation
+  };
+}
+
+function calculateADX(candles, period = 14) {
+  if (!candles || candles.length <= period + 1) return 0;
+
+  let plusDM = 0;
+  let minusDM = 0;
+  let trTotal = 0;
+
+  const recent = candles.slice(-(period + 1));
+
+  for (let i = 1; i < recent.length; i++) {
+    const currentHigh = Number(recent[i].high);
+    const currentLow = Number(recent[i].low);
+    const previousHigh = Number(recent[i - 1].high);
+    const previousLow = Number(recent[i - 1].low);
+    const previousClose = Number(recent[i - 1].close);
+
+    const upMove = currentHigh - previousHigh;
+    const downMove = previousLow - currentLow;
+
+    if (upMove > downMove && upMove > 0) {
+      plusDM += upMove;
+    }
+
+    if (downMove > upMove && downMove > 0) {
+      minusDM += downMove;
+    }
+
+    const tr = Math.max(
+      currentHigh - currentLow,
+      Math.abs(currentHigh - previousClose),
+      Math.abs(currentLow - previousClose)
+    );
+
+    trTotal += tr;
+  }
+
+  if (trTotal === 0) return 0;
+
+  const plusDI = 100 * (plusDM / trTotal);
+  const minusDI = 100 * (minusDM / trTotal);
+
+  const denominator = plusDI + minusDI;
+
+  if (denominator === 0) return 0;
+
+  return 100 * Math.abs(plusDI - minusDI) / denominator;
+}
   function analyzeMarket(candles) {
     if (!candles || candles.length < 25) {
       throw new Error("Not enough candle data");
@@ -74,6 +190,13 @@ document.addEventListener("DOMContentLoaded", () => {
       closes.length >= 50 ? ema(closes, 50) : null;
 
     const rsi = calculateRSI(closes, 14);
+    const ema200 =
+  closes.length >= 200 ? ema(closes, 200) : null;
+
+const macd = calculateMACD(closes);
+const atr = calculateATR(ordered, 14);
+const adx = calculateADX(ordered, 14);
+const bollinger = calculateBollingerBands(closes, 20, 2);
 
     let score = 50;
 
@@ -212,18 +335,33 @@ document.addEventListener("DOMContentLoaded", () => {
       signal = "SELL";
     }
 
-    return {
-      trend,
-      structure,
-      bos,
-      liquidity,
-      orderBlock,
-      volatility,
-      score,
-      signal,
-      rsi: rsi.toFixed(1),
-      price: currentClose
-    };
+   return {
+  trend,
+  structure,
+  bos,
+  liquidity,
+  orderBlock,
+  volatility,
+  score,
+  signal,
+
+  ema20: ema20 !== null ? ema20.toFixed(5) : "N/A",
+  ema50: ema50 !== null ? ema50.toFixed(5) : "N/A",
+  ema200: ema200 !== null ? ema200.toFixed(5) : "N/A",
+
+  rsi: rsi.toFixed(1),
+  macd: macd.macd.toFixed(5),
+  adx: adx.toFixed(1),
+  atr: atr.toFixed(5),
+
+  bollinger: {
+    upper: bollinger.upper.toFixed(5),
+    middle: bollinger.middle.toFixed(5),
+    lower: bollinger.lower.toFixed(5)
+  },
+
+  price: currentClose
+};
   }
 
   async function scanPair(symbol, row) {
@@ -269,7 +407,31 @@ document.addEventListener("DOMContentLoaded", () => {
       cells[6].textContent = analysis.volatility;
       cells[7].textContent = analysis.score;
       cells[8].textContent = analysis.signal;
+if (emaValue) {
+  emaValue.textContent =
+    `${analysis.ema20} / ${analysis.ema50} / ${analysis.ema200}`;
+}
 
+if (rsiValue) {
+  rsiValue.textContent = analysis.rsi;
+}
+
+if (macdValue) {
+  macdValue.textContent = analysis.macd;
+}
+
+if (adxValue) {
+  adxValue.textContent = analysis.adx;
+}
+
+if (atrValue) {
+  atrValue.textContent = analysis.atr;
+}
+
+if (bbValue) {
+  bbValue.textContent =
+    `${analysis.bollinger.upper} / ${analysis.bollinger.middle} / ${analysis.bollinger.lower}`;
+}
       if (analysis.signal === "BUY") {
         cells[8].style.color = "#00d084";
       } else if (analysis.signal === "SELL") {
