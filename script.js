@@ -399,6 +399,9 @@ const bollinger = calculateBollingerBands(closes, 20, 2);
       }
 
       const analysis = analyzeMarket(data.values);
+      if (indicatorTitle) {
+  indicatorTitle.textContent = `Technical Indicators — ${symbol}`;
+}
 
       cells[1].textContent = analysis.trend;
       cells[2].textContent = analysis.structure;
