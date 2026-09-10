@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Richmond AI Pair Analysis</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    .pair-page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .pair-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .pair-header h1 {
+      margin: 0;
+    }
+
+    .pair-subtitle {
+      opacity: 0.75;
+      margin-top: 6px;
+    }
+
+    .back-btn {
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: #1389e8;
+      color: white;
+      font-weight: 700;
+    }
+
+    .pair-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    .pair-card {
+      background: #0d1b2f;
+      border: 1px solid #1d3858;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .chart-card {
+      min-height: 520px;
+    }
+
+    #tradingviewChart {
+      width: 100%;
+      height: 470px;
+    }
+
+    .price-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .metric {
+      flex: 1;
+      min-width: 140px;
+      background: #10233c;
+      padding: 14px;
+      border-radius: 12px;
+    }
+
+    .metric span {
+      display: block;
+      font-size: 13px;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+
+    .metric strong {
+      font-size: 18px;
+    }
+
+    .indicator-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .indicator-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      background: #10233c;
+      padding: 12px 14px;
+      border-radius: 10px;
+    }
+
+    .signal-buy {
+      color: #00d084;
+    }
+
+    .signal-sell {
+      color: #ff4d4d;
+    }
+
+    .signal-wait {
+      color: #ffb000;
+    }
+
+    .timeframes {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .timeframe-btn {
+      border: 1px solid #27496d;
+      background: #10233c;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .timeframe-btn.active {
+      background: #1389e8;
+    }
+
+    .analysis-box {
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .pair-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="pair-page">
+
+    <div class="pair-header">
+      <div>
+        <h1 id="pairTitle">Richmond AI Pair Analysis</h1>
+        <div class="pair-subtitle">
+          Live chart • Technical indicators • Market structure • Richmond AI signal
+        </div>
+      </div>
+
+      <a href="index.html" class="back-btn">← Back to Scanner</a>
+    </div>
+
+    <div class="price-row">
+      <div class="metric">
+        <span>Current Price</span>
+        <strong id="currentPrice">Loading...</strong>
+      </div>
+
+      <div class="metric">
+        <span>AI Score</span>
+        <strong id="aiScore">--</strong>
+      </div>
+
+      <div class="metric">
+        <span>Signal</span>
+        <strong id="signalValue">WAIT</strong>
+      </div>
+
+      <div class="metric">
+        <span>Timeframe</span>
+        <strong id="timeframeValue">15min</strong>
+      </div>
+    </div>
+
+    <div class="pair-grid">
+
+      <section class="pair-card chart-card">
+        <h2>Real-Time Market Chart</h2>
+
+        <div class="timeframes">
+          <button class="timeframe-btn" data-interval="1min">1M</button>
+          <button class="timeframe-btn" data-interval="5min">5M</button>
+          <button class="timeframe-btn active" data-interval="15min">15M</button>
+          <button class="timeframe-btn" data-interval="30min">30M</button>
+          <button class="timeframe-btn" data-interval="1h">1H</button>
+          <button class="timeframe-btn" data-interval="4h">4H</button>
+        </div>
+
+        <div id="tradingviewChart"></div>
+      </section>
+
+      <section class="pair-card">
+        <h2>Technical Indicators</h2>
+
+        <div class="indicator-list">
+
+          <div class="indicator-item">
+            <span>EMA 20</span>
+            <strong id="ema20Value">--</strong>
+          </div>
+
+          <div class="indicator-item">
+            <span>EMA 50</span>
+            <strong id="ema50Value">--</strong>
+          </div>
+
+          <div class="indicator-item">
+            <span>EMA 200</span>
+            <strong id="ema200Value">--</strong>
+          </div>
+
+          <div class="indicator-item">
+            <span>RSI</span>
+            <strong id="pairRsiValue">--</strong>
+          </div>
+
+          <div class="indicator-item">
+            <span>MACD</span>
+            <strong id="pairMacdValue">--</strong>
+          </div>
+
+          <div class="indicator-item">
+            <span>ADX</span>
+            <strong id="pairAdxValue">--</strong>
+          </div>
+
+          <div class="indicator-item">
+            <span>ATR</span>
+            <strong id="pairAtrValue">--</strong>
+          </div>
+
+          <div class="indicator-item">
+            <span>Bollinger Upper</span>
+            <strong id="bbUpperValue">--</strong>
+          </div>
+
+          <div class="indicator-item">
+            <span>Bollinger Middle</span>
+            <strong id="bbMiddleValue">--</strong>
+          </div>
+
+          <div class="indicator-item">
+            <span>Bollinger Lower</span>
+            <strong id="bbLowerValue">--</strong>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <section class="pair-card analysis-box">
+      <h2>Richmond AI Market Analysis</h2>
+
+      <div class="indicator-list">
+
+        <div class="indicator-item">
+          <span>Trend</span>
+          <strong id="trendValue">--</strong>
+        </div>
+
+        <div class="indicator-item">
+          <span>Structure</span>
+          <strong id="structureValue">--</strong>
+        </div>
+
+        <div class="indicator-item">
+          <span>BOS / CHoCH</span>
+          <strong id="bosValue">--</strong>
+        </div>
+
+        <div class="indicator-item">
+          <span>Liquidity</span>
+          <strong id="liquidityValue">--</strong>
+        </div>
+
+        <div class="indicator-item">
+          <span>Order Block</span>
+          <strong id="orderBlockValue">--</strong>
+        </div>
+
+        <div class="indicator-item">
+          <span>Volatility</span>
+          <strong id="volatilityValue">--</strong>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <script src="pair.js"></script>
+</body>
+</html>
