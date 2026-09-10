@@ -45,7 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const liquidityValue = document.getElementById("liquidityValue");
   const orderBlockValue = document.getElementById("orderBlockValue");
   const volatilityValue = document.getElementById("volatilityValue");
+const entryValue = document.getElementById("entryValue");
+const stopLossValue = document.getElementById("stopLossValue");
+const tp1Value = document.getElementById("tp1Value");
+const tp2Value = document.getElementById("tp2Value");
+const riskRewardValue = document.getElementById("riskRewardValue");
+const lastUpdatedValue = document.getElementById("lastUpdatedValue");
+const tradeReasonValue = document.getElementById("tradeReasonValue");
 
+const tradeStatusValue = document.getElementById("tradeStatusValue");
+const confidenceValue = document.getElementById("confidenceValue");
+const directionValue = document.getElementById("directionValue");
+const confirmationTimeframeValue = document.getElementById("confirmationTimeframeValue");
+const confirmationReasonValue = document.getElementById("confirmationReasonValue");
   pairTitle.textContent = `${symbol} — Richmond AI Analysis`;
 
   function ema(values, period) {
@@ -489,7 +501,35 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const result = analyse(data.values);
+const entry = result.price;
 
+let stopLoss = entry;
+let tp1 = entry;
+let tp2 = entry;
+
+const riskDistance = result.atr * 1.5;
+
+if (result.signal === "BUY") {
+  stopLoss = entry - riskDistance;
+  tp1 = entry + riskDistance * 1.5;
+  tp2 = entry + riskDistance * 2.5;
+} else if (result.signal === "SELL") {
+  stopLoss = entry + riskDistance;
+  tp1 = entry - riskDistance * 1.5;
+  tp2 = entry - riskDistance * 2.5;
+}
+
+const riskReward =
+  result.signal === "WAIT" ? "--" : "1 : 2.5";
+
+const now = new Date();
+
+const confirmation =
+  result.signal === "BUY"
+    ? `BUY setup confirmed on ${selectedInterval}. Trend: ${result.trend}, Structure: ${result.structure}, RSI: ${result.rsi.toFixed(1)}, ADX: ${result.adx.toFixed(1)}.`
+    : result.signal === "SELL"
+    ? `SELL setup confirmed on ${selectedInterval}. Trend: ${result.trend}, Structure: ${result.structure}, RSI: ${result.rsi.toFixed(1)}, ADX: ${result.adx.toFixed(1)}.`
+    : `No confirmed trade setup on ${selectedInterval}. Richmond AI recommends waiting for stronger confirmation.`;
       currentPrice.textContent =
         formatPrice(result.price);
 
@@ -565,7 +605,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
       volatilityValue.textContent =
         result.volatility;
+entryValue.textContent = formatPrice(entry);
 
+stopLossValue.textContent =
+  result.signal === "WAIT"
+    ? "--"
+    : formatPrice(stopLoss);
+
+tp1Value.textContent =
+  result.signal === "WAIT"
+    ? "--"
+    : formatPrice(tp1);
+
+tp2Value.textContent =
+  result.signal === "WAIT"
+    ? "--"
+    : formatPrice(tp2);
+
+riskRewardValue.textContent = riskReward;
+
+lastUpdatedValue.textContent =
+  now.toLocaleTimeString();
+
+tradeReasonValue.textContent =
+  confirmation;
+
+tradeStatusValue.textContent =
+  result.signal;
+
+confidenceValue.textContent =
+  `${result.score} / 100`;
+
+directionValue.textContent =
+  result.signal;
+
+confirmationTimeframeValue.textContent =
+  selectedInterval;
+
+confirmationReasonValue.textContent =
+  confirmation;
     } catch (error) {
       console.error(error);
 
