@@ -12,6 +12,7 @@ const macdValue = document.getElementById("macdValue");
 const adxValue = document.getElementById("adxValue");
 const atrValue = document.getElementById("atrValue");
 const bbValue = document.getElementById("bbValue");
+  const indicatorTitle = document.getElementById("indicatorTitle");
   if (!scanBtn || !scannerBody) return;
 
   const sleep = (ms) =>
