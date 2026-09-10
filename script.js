@@ -14,7 +14,7 @@ const adxValue = document.getElementById("adxValue");
 const atrValue = document.getElementById("atrValue");
 const bbValue = document.getElementById("bbValue");
   const indicatorTitle = document.getElementById("indicatorTitle");
-  const pairResults = {};
+
   if (!scanBtn || !scannerBody) return;
 
   const sleep = (ms) =>
