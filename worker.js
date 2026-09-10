@@ -17,7 +17,7 @@ export default {
         "https://api.twelvedata.com/time_series" +
         "?symbol=" + encodeURIComponent(symbol) +
         "&interval=15min" +
-        "&outputsize=100" +
+        "&outputsize=200" +
         "&apikey=" + encodeURIComponent(env.TWELVE_DATA_API_KEY);
 
       try {
