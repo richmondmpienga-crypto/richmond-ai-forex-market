@@ -13,6 +13,7 @@ const adxValue = document.getElementById("adxValue");
 const atrValue = document.getElementById("atrValue");
 const bbValue = document.getElementById("bbValue");
   const indicatorTitle = document.getElementById("indicatorTitle");
+  const pairResults = {};
   if (!scanBtn || !scannerBody) return;
 
   const sleep = (ms) =>
@@ -399,6 +400,7 @@ const bollinger = calculateBollingerBands(closes, 20, 2);
       }
 
       const analysis = analyzeMarket(data.values);
+      pairResults[symbol] = analysis;
       if (indicatorTitle) {
   indicatorTitle.textContent = `Technical Indicators — ${symbol}`;
 }
@@ -533,4 +535,49 @@ if (bbValue) {
     scanBtn.disabled = false;
     scanBtn.textContent = "Scan Market";
   });
+  const pairResults = {};
+
+scannerBody.querySelectorAll("tr").forEach((row) => {
+  row.style.cursor = "pointer";
+
+  row.addEventListener("click", () => {
+    const cells = row.querySelectorAll("td");
+    if (!cells.length) return;
+
+    const symbol = cells[0].textContent.trim();
+    const analysis = pairResults[symbol];
+
+    if (!analysis) return;
+
+    if (indicatorTitle) {
+      indicatorTitle.textContent = `Technical Indicators — ${symbol}`;
+    }
+
+    if (emaValue) {
+      emaValue.textContent =
+        `${analysis.ema20} / ${analysis.ema50} / ${analysis.ema200}`;
+    }
+
+    if (rsiValue) {
+      rsiValue.textContent = analysis.rsi;
+    }
+
+    if (macdValue) {
+      macdValue.textContent = analysis.macd;
+    }
+
+    if (adxValue) {
+      adxValue.textContent = analysis.adx;
+    }
+
+    if (atrValue) {
+      atrValue.textContent = analysis.atr;
+    }
+
+    if (bbValue) {
+      bbValue.textContent =
+        `${analysis.bollinger.upper} / ${analysis.bollinger.middle} / ${analysis.bollinger.lower}`;
+    }
+  });
+});
 });
