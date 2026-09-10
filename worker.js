@@ -5,7 +5,7 @@ export default {
     // Secure market-data endpoint
     if (url.pathname === "/api/forex") {
       const symbol = url.searchParams.get("symbol") || "EUR/USD";
-
+const interval = url.searchParams.get("interval") || "15min";
       if (!env.TWELVE_DATA_API_KEY) {
         return Response.json(
           { error: "Twelve Data API key is not configured" },
@@ -16,7 +16,7 @@ export default {
       const apiUrl =
         "https://api.twelvedata.com/time_series" +
         "?symbol=" + encodeURIComponent(symbol) +
-        "&interval=15min" +
+        "&interval=" + encodeURIComponent(interval) +
         "&outputsize=200" +
         "&apikey=" + encodeURIComponent(env.TWELVE_DATA_API_KEY);
 
