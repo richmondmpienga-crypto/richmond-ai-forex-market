@@ -4,10 +4,10 @@ const symbol = params.get("symbol") || "XAU/USD";
 let selectedInterval = "15min";
 
 const tradingViewSymbols = {
-  "EUR/USD": "FX:EURUSD",
-  "GBP/USD": "FX:GBPUSD",
-  "USD/JPY": "FX:USDJPY",
-  "XAU/USD": "OANDA:XAUUSD"
+ "EUR/USD": "OANDA:EURUSD",
+"GBP/USD": "OANDA:GBPUSD",
+"USD/JPY": "OANDA:USDJPY",
+"XAU/USD": "OANDA:XAUUSD"
 };
 
 const tradingViewIntervals = {
@@ -415,36 +415,53 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function loadTradingView() {
-    const container =
-      document.getElementById("tradingviewChart");
+  const container = document.getElementById("tradingviewChart");
 
-    container.innerHTML = "";
+  if (!container) return;
 
-    if (!window.TradingView) {
-      container.innerHTML =
-        "Chart service is unavailable.";
-      return;
-    }
+  container.innerHTML = "";
 
-    new TradingView.widget({
-      autosize: true,
-      symbol:
-        tradingViewSymbols[symbol] ||
-        "OANDA:XAUUSD",
-      interval:
-        tradingViewIntervals[selectedInterval] ||
-        "15",
-      timezone: "Etc/UTC",
-      theme: "dark",
-      style: "1",
-      locale: "en",
-      toolbar_bg: "#0d1b2f",
-      enable_publishing: false,
-      allow_symbol_change: false,
-      hide_side_toolbar: false,
-      container_id: "tradingviewChart"
-    });
-  }
+  const widgetContainer = document.createElement("div");
+  widgetContainer.className = "tradingview-widget-container";
+  widgetContainer.style.height = "100%";
+  widgetContainer.style.width = "100%";
+
+  const widget = document.createElement("div");
+  widget.className = "tradingview-widget-container__widget";
+  widget.style.height = "100%";
+  widget.style.width = "100%";
+
+  const script = document.createElement("script");
+
+  script.src =
+    "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+
+  script.type = "text/javascript";
+  script.async = true;
+
+  script.innerHTML = JSON.stringify({
+    autosize: true,
+    symbol:
+      tradingViewSymbols[symbol] ||
+      "OANDA:XAUUSD",
+    interval:
+      tradingViewIntervals[selectedInterval] ||
+      "15",
+    timezone: "Etc/UTC",
+    theme: "dark",
+    style: "1",
+    locale: "en",
+    backgroundColor: "#0d1b2f",
+    allow_symbol_change: false,
+    save_image: false,
+    calendar: false,
+    support_host: "https://www.tradingview.com"
+  });
+
+  widgetContainer.appendChild(widget);
+  widgetContainer.appendChild(script);
+  container.appendChild(widgetContainer);
+}
 
   async function loadAnalysis() {
     try {
