@@ -480,17 +480,26 @@ const confirmationReasonValue = document.getElementById("confirmationReasonValue
     try {
       currentPrice.textContent = "Loading...";
 
-      const response = await fetch(
-        `/api/forex?symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(selectedInterval)}`
-      );
+     const fetchTimeframe = async (interval) => {
+  const response = await fetch(
+    `/api/forex?symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(interval)}`
+  );
 
-      if (!response.ok) {
-        throw new Error(
-          `HTTP ${response.status}`
-        );
-      }
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
 
-      const data = await response.json();
+  return await response.json();
+};
+
+const [trendData, setupData, confirmationData] = await Promise.all([
+  fetchTimeframe("1h"),
+  fetchTimeframe(selectedInterval),
+  fetchTimeframe("5min")
+]);
+
+// Keep the existing analysis working from the selected timeframe
+const data = setupData;
 
       if (
         data.error ||
@@ -502,6 +511,31 @@ const confirmationReasonValue = document.getElementById("confirmationReasonValue
       }
 
       const result = analyse(data.values);
+     const trendResult = analyse(trendData.values);
+const confirmationResult = analyse(confirmationData.values);
+     const higherTrend = trendResult.trend;
+const setupSignal = result.signal;
+const entryTrend = confirmationResult.trend;
+
+let confirmedSignal = "WAIT";
+
+if (
+  setupSignal === "BUY" &&
+  higherTrend === "BULLISH" &&
+  entryTrend === "BULLISH"
+) {
+  confirmedSignal = "BUY";
+} else if (
+  setupSignal === "SELL" &&
+  higherTrend === "BEARISH" &&
+  entryTrend === "BEARISH"
+) {
+  confirmedSignal = "SELL";
+}
+
+const multiTimeframeScore = Math.round(
+  (trendResult.score + result.score + confirmationResult.score) / 3
+);
 const entry = result.price;
 
 let stopLoss = entry;
@@ -510,25 +544,26 @@ let tp2 = entry;
 
 const riskDistance = result.atr * 1.5;
 
-if (result.signal === "BUY") {
-  stopLoss = entry - riskDistance;
-  tp1 = entry + riskDistance * 1.5;
-  tp2 = entry + riskDistance * 2.5;
-} else if (result.signal === "SELL") {
-  stopLoss = entry + riskDistance;
-  tp1 = entry - riskDistance * 1.5;
-  tp2 = entry - riskDistance * 2.5;
+if (confirmedSignal === "BUY") {
+    stopLoss = entry - riskDistance;
+    tp1 = entry + riskDistance * 1.5;
+    tp2 = entry + riskDistance * 2.5;
+} else if (confirmedSignal === "SELL") {
+    stopLoss = entry + riskDistance;
+    tp1 = entry - riskDistance * 1.5;
+    tp2 = entry - riskDistance * 2.5;
 }
 
+
 const riskReward =
-  result.signal === "WAIT" ? "--" : "1 : 2.5";
+  confirmedSignal === "WAIT" ? "--" : "1 : 2.5";
 
 const now = new Date();
 
 const confirmation =
-  result.signal === "BUY"
+ confirmedSignal === "BUY"
     ? `BUY setup confirmed on ${selectedInterval}. Trend: ${result.trend}, Structure: ${result.structure}, RSI: ${result.rsi.toFixed(1)}, ADX: ${result.adx.toFixed(1)}.`
-    : result.signal === "SELL"
+    confirmedSignal === "SELL"
     ? `SELL setup confirmed on ${selectedInterval}. Trend: ${result.trend}, Structure: ${result.structure}, RSI: ${result.rsi.toFixed(1)}, ADX: ${result.adx.toFixed(1)}.`
     : `No confirmed trade setup on ${selectedInterval}. Richmond AI recommends waiting for stronger confirmation.`;
       currentPrice.textContent =
@@ -538,15 +573,15 @@ const confirmation =
         `${result.score} / 100`;
 
       signalValue.textContent =
-        result.signal;
+        confirmedSignal;
 
       signalValue.className = "";
 
-      if (result.signal === "BUY") {
+     if (confirmedSignal === "BUY") {
         signalValue.classList.add(
           "signal-buy"
         );
-      } else if (result.signal === "SELL") {
+     } else if (confirmedSignal === "SELL") {
         signalValue.classList.add(
           "signal-sell"
         );
@@ -614,12 +649,12 @@ stopLossValue.textContent =
     : formatPrice(stopLoss);
 
 tp1Value.textContent =
-  result.signal === "WAIT"
+ confirmedSignal === "WAIT"
     ? "--"
     : formatPrice(tp1);
 
 tp2Value.textContent =
-  result.signal === "WAIT"
+ confirmedSignal === "WAIT"
     ? "--"
     : formatPrice(tp2);
 
@@ -632,16 +667,16 @@ tradeReasonValue.textContent =
   confirmation;
 
 tradeStatusValue.textContent =
-  result.signal;
+  confirmedSignal;
 if (tradeSummaryCard) {
-  if (result.signal === "BUY") {
+  if (confirmedSignal === "BUY") {
     tradeSummaryCard.textContent =
       `BUY | Entry ${formatPrice(entry)} | SL ${formatPrice(stopLoss)} | TP1 ${formatPrice(tp1)} | TP2 ${formatPrice(tp2)} | R:R ${riskReward}`;
 
     tradeSummaryCard.style.background = "#0f3d2e";
     tradeSummaryCard.style.borderColor = "#00d084";
     tradeSummaryCard.style.color = "#00d084";
-  } else if (result.signal === "SELL") {
+ } else if (confirmedSignal === "SELL") {
     tradeSummaryCard.textContent =
       `SELL | Entry ${formatPrice(entry)} | SL ${formatPrice(stopLoss)} | TP1 ${formatPrice(tp1)} | TP2 ${formatPrice(tp2)} | R:R ${riskReward}`;
 
@@ -658,10 +693,9 @@ if (tradeSummaryCard) {
   }
 }
 confidenceValue.textContent =
-  `${result.score} / 100`;
-
+  `${multiTimeframeScore} / 100`;
 directionValue.textContent =
-  result.signal;
+  confirmedSignal;
 
 confirmationTimeframeValue.textContent =
   selectedInterval;
