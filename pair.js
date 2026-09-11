@@ -561,16 +561,16 @@ const riskReward =
 const now = new Date();
 
 const confirmation =
- confirmedSignal === "BUY"
-    ? `BUY setup confirmed on ${selectedInterval}. Trend: ${result.trend}, Structure: ${result.structure}, RSI: ${result.rsi.toFixed(1)}, ADX: ${result.adx.toFixed(1)}.`
-    confirmedSignal === "SELL"
-    ? `SELL setup confirmed on ${selectedInterval}. Trend: ${result.trend}, Structure: ${result.structure}, RSI: ${result.rsi.toFixed(1)}, ADX: ${result.adx.toFixed(1)}.`
+  confirmedSignal === "BUY"
+    ? `BUY setup confirmed on ${selectedInterval}. Trend: ${result.trend}, Structure: ${result.structure}, RSI: ${result.rsi.toFixed(1)}`
+    : confirmedSignal === "SELL"
+    ? `SELL setup confirmed on ${selectedInterval}. Trend: ${result.trend}, Structure: ${result.structure}, RSI: ${result.rsi.toFixed(1)}`
     : `No confirmed trade setup on ${selectedInterval}. Richmond AI recommends waiting for stronger confirmation.`;
       currentPrice.textContent =
         formatPrice(result.price);
 
       aiScore.textContent =
-        `${result.score} / 100`;
+     `${multiTimeframeScore} / 100`;
 
       signalValue.textContent =
         confirmedSignal;
