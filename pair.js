@@ -613,31 +613,7 @@ STATUS: WAIT`
 ${selectedInterval} Setup: ${setupSignal}
 5M Confirmation: ${entryTrend}
 STATUS: WAIT`;
-    ? `SELL CONFIRMED — 1H trend is ${higherTrend}, ${selectedInterval} setup is ${setupSignal}, and 5M confirmation is ${entryTrend}.`
-    : setupSignal === "WAIT" &&
-      higherTrend === "BULLISH" &&
-      entryTrend === "BULLISH"
-    ? `WAIT — Bullish bias is developing. 1H and 5M are bullish, but ${selectedInterval} has not produced a BUY setup yet.`
-    : setupSignal === "WAIT" &&
-      higherTrend === "BEARISH" &&
-      entryTrend === "BEARISH"
-    ? `WAIT — Bearish bias is developing. 1H and 5M are bearish, but ${selectedInterval} has not produced a SELL setup yet.`
-    : `WAIT — Timeframes are not fully aligned. 1H: ${higherTrend}, ${selectedInterval}: ${setupSignal}, 5M: ${entryTrend}.`;
-    const waitingForText =
-  confirmedSignal === "BUY"
-    ? `All three timeframes are aligned. BUY setup confirmed.`
-    : confirmedSignal === "SELL"
-    ? `All three timeframes are aligned. SELL setup confirmed.`
-    : higherTrend === "BULLISH" &&
-      entryTrend === "BULLISH" &&
-      setupSignal === "WAIT"
-    ? `Potential BUY developing. 1H trend is bullish and 5M confirmation is bullish. Waiting for ${selectedInterval} to produce a BUY setup.`
-    : higherTrend === "BEARISH" &&
-      entryTrend === "BEARISH" &&
-      setupSignal === "WAIT"
-    ? `Potential SELL developing. 1H trend is bearish and 5M confirmation is bearish. Waiting for ${selectedInterval} to produce a SELL setup.`
-    : `Waiting for full alignment. 1H: ${higherTrend}, ${selectedInterval}: ${setupSignal}, 5M: ${entryTrend}.`;
-
+  
 waitingForValue.textContent = waitingForText;
       currentPrice.textContent =
         formatPrice(result.price);
