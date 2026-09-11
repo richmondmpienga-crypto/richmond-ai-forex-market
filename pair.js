@@ -577,20 +577,42 @@ if (confirmedSignal === "BUY") {
     stopLoss = entry - riskDistance;
     tp1 = entry + riskDistance * 1.5;
     tp2 = entry + riskDistance * 2.5;
-} else if (confirmedSignal === "SELL") {
-    stopLoss = entry + riskDistance;
-    tp1 = entry - riskDistance * 1.5;
-    tp2 = entry - riskDistance * 2.5;
-}
-
-
-const riskReward =
-  confirmedSignal === "WAIT" ? "--" : "1 : 2.5";
-const now = new Date();
-const confirmation =
+const waitingForText =
   confirmedSignal === "BUY"
-    ? `BUY CONFIRMED — 1H trend is ${higherTrend}, ${selectedInterval} setup is ${setupSignal}, and 5M confirmation is ${entryTrend}.`
+    ? `BUY CONFIRMED
+✓ 1H Trend: ${higherTrend}
+✓ ${selectedInterval} Setup: ${setupSignal}
+✓ 5M Confirmation: ${entryTrend}
+STATUS: BUY`
     : confirmedSignal === "SELL"
+    ? `SELL CONFIRMED
+✓ 1H Trend: ${higherTrend}
+✓ ${selectedInterval} Setup: ${setupSignal}
+✓ 5M Confirmation: ${entryTrend}
+STATUS: SELL`
+    : higherTrend === "BULLISH" && entryTrend === "BULLISH"
+    ? `Potential BUY developing
+${higherTrend === "BULLISH" ? "✓" : "✗"} 1H Trend: ${higherTrend}
+${result.structure === "HH / HL" ? "✓" : "✗"} ${selectedInterval} Structure: ${result.structure}
+${result.score >= 70 ? "✓" : "✗"} ${selectedInterval} Score: ${result.score} / 100
+${result.macd > 0 ? "✓" : "✗"} MACD: ${result.macd.toFixed(5)}
+${result.rsi >= 50 && result.rsi < 75 ? "✓" : "✗"} RSI: ${result.rsi.toFixed(1)}
+${entryTrend === "BULLISH" ? "✓" : "✗"} 5M Confirmation: ${entryTrend}
+STATUS: WAIT`
+    : higherTrend === "BEARISH" && entryTrend === "BEARISH"
+    ? `Potential SELL developing
+${higherTrend === "BEARISH" ? "✓" : "✗"} 1H Trend: ${higherTrend}
+${result.structure === "LH / LL" ? "✓" : "✗"} ${selectedInterval} Structure: ${result.structure}
+${result.score <= 30 ? "✓" : "✗"} ${selectedInterval} Score: ${result.score} / 100
+${result.macd < 0 ? "✓" : "✗"} MACD: ${result.macd.toFixed(5)}
+${result.rsi <= 50 && result.rsi > 25 ? "✓" : "✗"} RSI: ${result.rsi.toFixed(1)}
+${entryTrend === "BEARISH" ? "✓" : "✗"} 5M Confirmation: ${entryTrend}
+STATUS: WAIT`
+    : `Waiting for full alignment
+1H Trend: ${higherTrend}
+${selectedInterval} Setup: ${setupSignal}
+5M Confirmation: ${entryTrend}
+STATUS: WAIT`;
     ? `SELL CONFIRMED — 1H trend is ${higherTrend}, ${selectedInterval} setup is ${setupSignal}, and 5M confirmation is ${entryTrend}.`
     : setupSignal === "WAIT" &&
       higherTrend === "BULLISH" &&
