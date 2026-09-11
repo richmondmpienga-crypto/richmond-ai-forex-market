@@ -560,6 +560,8 @@ if (confirmedSignal === "BUY") {
 
 
 const riskReward =
+  confirmedSignal === "WAIT" ? "--" : "1 : 2.5";
+
 const confirmation =
   confirmedSignal === "BUY"
     ? `BUY CONFIRMED — 1H trend is ${higherTrend}, ${selectedInterval} setup is ${setupSignal}, and 5M confirmation is ${entryTrend}.`
