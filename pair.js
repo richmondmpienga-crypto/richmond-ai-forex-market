@@ -25,7 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const aiScore = document.getElementById("aiScore");
   const signalValue = document.getElementById("signalValue");
   const timeframeValue = document.getElementById("timeframeValue");
-
+const higherTrendValue = document.getElementById("higherTrendValue");
+const setupSignalValue = document.getElementById("setupSignalValue");
+const entryTrendValue = document.getElementById("entryTrendValue");
   const ema20Value = document.getElementById("ema20Value");
   const ema50Value = document.getElementById("ema50Value");
   const ema200Value = document.getElementById("ema200Value");
@@ -516,7 +518,9 @@ const confirmationResult = analyse(confirmationData.values);
      const higherTrend = trendResult.trend;
 const setupSignal = result.signal;
 const entryTrend = confirmationResult.trend;
-
+higherTrendValue.textContent = higherTrend;
+setupSignalValue.textContent = setupSignal;
+entryTrendValue.textContent = entryTrend;
 let confirmedSignal = "WAIT";
 
 if (
