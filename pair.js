@@ -58,6 +58,7 @@ const confidenceValue = document.getElementById("confidenceValue");
 const directionValue = document.getElementById("directionValue");
 const confirmationTimeframeValue = document.getElementById("confirmationTimeframeValue");
 const confirmationReasonValue = document.getElementById("confirmationReasonValue");
+ const tradeSummaryCard = document.getElementById("tradeSummaryCard");
   pairTitle.textContent = `${symbol} — Richmond AI Analysis`;
 
   function ema(values, period) {
@@ -632,7 +633,30 @@ tradeReasonValue.textContent =
 
 tradeStatusValue.textContent =
   result.signal;
+if (tradeSummaryCard) {
+  if (result.signal === "BUY") {
+    tradeSummaryCard.textContent =
+      `BUY | Entry ${formatPrice(entry)} | SL ${formatPrice(stopLoss)} | TP1 ${formatPrice(tp1)} | TP2 ${formatPrice(tp2)} | R:R ${riskReward}`;
 
+    tradeSummaryCard.style.background = "#0f3d2e";
+    tradeSummaryCard.style.borderColor = "#00d084";
+    tradeSummaryCard.style.color = "#00d084";
+  } else if (result.signal === "SELL") {
+    tradeSummaryCard.textContent =
+      `SELL | Entry ${formatPrice(entry)} | SL ${formatPrice(stopLoss)} | TP1 ${formatPrice(tp1)} | TP2 ${formatPrice(tp2)} | R:R ${riskReward}`;
+
+    tradeSummaryCard.style.background = "#3a1d24";
+    tradeSummaryCard.style.borderColor = "#ff4d4d";
+    tradeSummaryCard.style.color = "#ff4d4d";
+  } else {
+    tradeSummaryCard.textContent =
+      "WAIT — No confirmed trade setup";
+
+    tradeSummaryCard.style.background = "#3a3112";
+    tradeSummaryCard.style.borderColor = "#ffb000";
+    tradeSummaryCard.style.color = "#ffb000";
+  }
+}
 confidenceValue.textContent =
   `${result.score} / 100`;
 
