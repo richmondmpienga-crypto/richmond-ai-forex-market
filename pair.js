@@ -387,13 +387,37 @@ const confirmationReasonValue = document.getElementById("confirmationReasonValue
       Math.min(100, Math.round(score))
     );
 
-    let signal = "WAIT";
+    const bullishStructure =
+  String(structure).includes("HH") ||
+  String(structure).includes("HL");
 
-    if (score >= 70) {
-      signal = "BUY";
-    } else if (score <= 30) {
-      signal = "SELL";
-    }
+const bearishStructure =
+  String(structure).includes("LH") ||
+  String(structure).includes("LL");
+
+let signal = "WAIT";
+
+const strongBuySetup =
+  score >= 70 &&
+  trend === "BULLISH" &&
+  bullishStructure &&
+  rsi >= 50 &&
+  rsi < 75 &&
+  macd > 0;
+
+const strongSellSetup =
+  score <= 30 &&
+  trend === "BEARISH" &&
+  bearishStructure &&
+  rsi <= 50 &&
+  rsi > 25 &&
+  macd < 0;
+
+if (strongBuySetup) {
+  signal = "BUY";
+} else if (strongSellSetup) {
+  signal = "SELL";
+}
 
     return {
       price,
