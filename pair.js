@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const higherTrendValue = document.getElementById("higherTrendValue");
 const setupSignalValue = document.getElementById("setupSignalValue");
 const entryTrendValue = document.getElementById("entryTrendValue");
+ const waitingForValue = document.getElementById("waitingForValue");
   const ema20Value = document.getElementById("ema20Value");
   const ema50Value = document.getElementById("ema50Value");
   const ema200Value = document.getElementById("ema200Value");
@@ -576,7 +577,22 @@ const confirmation =
       entryTrend === "BEARISH"
     ? `WAIT — Bearish bias is developing. 1H and 5M are bearish, but ${selectedInterval} has not produced a SELL setup yet.`
     : `WAIT — Timeframes are not fully aligned. 1H: ${higherTrend}, ${selectedInterval}: ${setupSignal}, 5M: ${entryTrend}.`;
-    
+    const waitingForText =
+  confirmedSignal === "BUY"
+    ? `All three timeframes are aligned. BUY setup confirmed.`
+    : confirmedSignal === "SELL"
+    ? `All three timeframes are aligned. SELL setup confirmed.`
+    : higherTrend === "BULLISH" &&
+      entryTrend === "BULLISH" &&
+      setupSignal === "WAIT"
+    ? `Potential BUY developing. 1H trend is bullish and 5M confirmation is bullish. Waiting for ${selectedInterval} to produce a BUY setup.`
+    : higherTrend === "BEARISH" &&
+      entryTrend === "BEARISH" &&
+      setupSignal === "WAIT"
+    ? `Potential SELL developing. 1H trend is bearish and 5M confirmation is bearish. Waiting for ${selectedInterval} to produce a SELL setup.`
+    : `Waiting for full alignment. 1H: ${higherTrend}, ${selectedInterval}: ${setupSignal}, 5M: ${entryTrend}.`;
+
+waitingForValue.textContent = waitingForText;
       currentPrice.textContent =
         formatPrice(result.price);
 
