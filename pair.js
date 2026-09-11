@@ -672,7 +672,7 @@ tp2Value.textContent =
 riskRewardValue.textContent = riskReward;
 
 lastUpdatedValue.textContent =
-  now.toLocaleTimeString();
+ new Date().toLocaleTimeString();
 
 tradeReasonValue.textContent =
   confirmation;
