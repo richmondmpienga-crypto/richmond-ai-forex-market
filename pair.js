@@ -799,6 +799,6 @@ confirmationReasonValue.textContent =
   loadTradingView();
   loadAnalysis();
 
-  // Refresh analysis every 60 seconds.
-  setInterval(loadAnalysis, 60000);
+// Refresh analysis every 5 minutes.
+setInterval(loadAnalysis, 300000);
 });
