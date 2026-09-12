@@ -76,7 +76,16 @@ element.classList.toggle("closed", !isOpen);
   setSessionStatus(londonSession, londonOpen);
   setSessionStatus(newYorkSession, newYorkOpen);
 }
+function loadEconomicCalendar() {
+  if (!economicCalendar) return;
 
+  economicCalendar.innerHTML = `
+    <strong>Upcoming High-Impact News</strong>
+    <p>Loading economic calendar...</p>
+  `;
+}
+
+loadEconomicCalendar();
 updateTradingSessions();
   const sleep = (ms) =>
     new Promise((resolve) => setTimeout(resolve, ms));
