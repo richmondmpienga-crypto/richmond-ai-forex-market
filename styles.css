@@ -430,7 +430,7 @@ body::before {
   position: fixed;
   inset: 0;
   background: url("./richmond-ai-logo.png") center center / 650px auto no-repeat;
-  opacity: 0.055;
+ opacity: 0.10;
   pointer-events: none;
   z-index: 0;
 }
