@@ -128,7 +128,15 @@ body {
   flex-direction: column;
   gap: 8px;
 }
+.session-card.open {
+  border-color: #22c55e;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.25);
+}
 
+.session-card.closed {
+  border-color: #ff3b3b;
+  box-shadow: 0 0 12px rgba(255, 59, 59, 0.18);
+}
 .session-card span {
   color: var(--blue);
   font-size: 14px;
