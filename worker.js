@@ -6,14 +6,29 @@ if (url.pathname === "/api/login" && request.method === "POST") {
   try {
     const { username, password } = await request.json();
 
-    if (
-      username === env.LOGIN_USERNAME &&
-      password === env.LOGIN_PASSWORD
-    ) {
-      return Response.json({
-        success: true
-      });
+   if (
+  username === env.LOGIN_USERNAME &&
+  password === env.LOGIN_PASSWORD
+) {
+  const sessionData = new TextEncoder().encode(env.SESSION_SECRET);
+  const sessionHash = await crypto.subtle.digest("SHA-256", sessionData);
+
+  const sessionToken = Array.from(new Uint8Array(sessionHash))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+
+  return Response.json(
+    {
+      success: true
+    },
+    {
+      headers: {
+        "Set-Cookie":
+          `richmond_session=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=86400`
+      }
     }
+  );
+}
 
     return Response.json(
       {
