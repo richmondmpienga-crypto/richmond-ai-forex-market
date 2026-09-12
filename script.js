@@ -15,7 +15,10 @@ const adxValue = document.getElementById("adxValue");
 const atrValue = document.getElementById("atrValue");
 const bbValue = document.getElementById("bbValue");
   const indicatorTitle = document.getElementById("indicatorTitle");
-
+const sydneySession = document.getElementById("sydneySession");
+const tokyoSession = document.getElementById("tokyoSession");
+const londonSession = document.getElementById("londonSession");
+const newYorkSession = document.getElementById("newYorkSession");
   if (!scanBtn || !scannerBody) return;
 function updateMarketStatusBadge() {
   if (!marketStatusBadge) return;
@@ -34,6 +37,43 @@ function updateMarketStatusBadge() {
 }
 
 updateMarketStatusBadge();
+  function updateTradingSessions() {
+  const now = new Date();
+  const utcDay = now.getUTCDay();
+  const utcHour = now.getUTCHours();
+
+  const weekendClosed = utcDay === 6 || utcDay === 0;
+
+  const setSessionStatus = (element, isOpen) => {
+    if (!element) return;
+
+    const statusText = element.querySelector("small");
+
+    if (statusText) {
+      statusText.textContent = isOpen ? "OPEN" : "CLOSED";
+    }
+  };
+
+  if (weekendClosed) {
+    setSessionStatus(sydneySession, false);
+    setSessionStatus(tokyoSession, false);
+    setSessionStatus(londonSession, false);
+    setSessionStatus(newYorkSession, false);
+    return;
+  }
+
+  const sydneyOpen = utcHour >= 21 || utcHour < 6;
+  const tokyoOpen = utcHour >= 0 && utcHour < 9;
+  const londonOpen = utcHour >= 7 && utcHour < 16;
+  const newYorkOpen = utcHour >= 12 && utcHour < 21;
+
+  setSessionStatus(sydneySession, sydneyOpen);
+  setSessionStatus(tokyoSession, tokyoOpen);
+  setSessionStatus(londonSession, londonOpen);
+  setSessionStatus(newYorkSession, newYorkOpen);
+}
+
+updateTradingSessions();
   const sleep = (ms) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
