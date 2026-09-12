@@ -88,6 +88,11 @@ body {
   box-shadow: 0 0 10px var(--green);
 }
 
+.market-status.closed .live-dot {
+  background: #ff3b3b;
+  box-shadow: 0 0 10px #ff3b3b;
+}
+
 /* MAIN DASHBOARD */
 
 .dashboard {
