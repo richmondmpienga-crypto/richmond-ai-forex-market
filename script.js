@@ -47,23 +47,31 @@ updateMarketStatusBadge();
  
 
   const weekendClosed = utcDay === 6 || utcDay === 0;
-
-  const setSessionStatus = (element, isOpen) => {
+const getLocalTime = (timeZone) =>
+  new Intl.DateTimeFormat("en-GB", {
+    timeZone,
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  }).format(now);
+const setSessionStatus = (element, isOpen, timeZone) => {
     if (!element) return;
 element.classList.toggle("open", isOpen);
 element.classList.toggle("closed", !isOpen);
     const statusText = element.querySelector("small");
 
     if (statusText) {
-      statusText.textContent = isOpen ? "OPEN" : "CLOSED";
+  const localTime = timeZone ? getLocalTime(timeZone) : "";
+statusText.textContent =
+ `${isOpen ? "OPEN" : "CLOSED"}${localTime ? ` • ${localTime}` : ""}`;
     }
   };
 
   if (weekendClosed) {
-    setSessionStatus(sydneySession, false);
-    setSessionStatus(tokyoSession, false);
-    setSessionStatus(londonSession, false);
-    setSessionStatus(newYorkSession, false);
+setSessionStatus(sydneySession, false, "Australia/Sydney");
+setSessionStatus(tokyoSession, false, "Asia/Tokyo");
+setSessionStatus(londonSession, false, "Europe/London");
+setSessionStatus(newYorkSession, false, "America/New_York");
     return;
   }
 const getLocalHour = (timeZone) =>
@@ -83,10 +91,10 @@ const londonOpen = londonHour >= 8 && londonHour < 17;
   const newYorkHour = getLocalHour("America/New_York");
 const newYorkOpen = newYorkHour >= 8 && newYorkHour < 17;
 
-  setSessionStatus(sydneySession, sydneyOpen);
-  setSessionStatus(tokyoSession, tokyoOpen);
-  setSessionStatus(londonSession, londonOpen);
-  setSessionStatus(newYorkSession, newYorkOpen);
+ setSessionStatus(sydneySession, sydneyOpen, "Australia/Sydney");
+setSessionStatus(tokyoSession, tokyoOpen, "Asia/Tokyo");
+setSessionStatus(londonSession, londonOpen, "Europe/London");
+setSessionStatus(newYorkSession, newYorkOpen, "America/New_York");
 }
 function loadEconomicCalendar() {
   if (!economicCalendar) return;
