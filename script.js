@@ -44,7 +44,7 @@ updateMarketStatusBadge();
   function updateTradingSessions() {
   const now = new Date();
   const utcDay = now.getUTCDay();
-  const utcHour = now.getUTCHours();
+ 
 
   const weekendClosed = utcDay === 6 || utcDay === 0;
 
