@@ -757,7 +757,20 @@ directionValue.textContent =
 
 confirmationTimeframeValue.textContent =
   selectedInterval;
-
+const confirmation =
+  confirmedSignal === "BUY"
+    ? `BUY CONFIRMED — 1H trend is ${higherTrend}, ${selectedInterval} setup is ${setupSignal}, and 5M confirmation is ${entryTrend}.`
+    : confirmedSignal === "SELL"
+    ? `SELL CONFIRMED — 1H trend is ${higherTrend}, ${selectedInterval} setup is ${setupSignal}, and 5M confirmation is ${entryTrend}.`
+    : setupSignal === "WAIT" &&
+      higherTrend === "BULLISH" &&
+      entryTrend === "BULLISH"
+    ? `WAIT — Bullish bias is developing. 1H and 5M are bullish, but ${selectedInterval} has not produced a BUY setup yet.`
+    : setupSignal === "WAIT" &&
+      higherTrend === "BEARISH" &&
+      entryTrend === "BEARISH"
+    ? `WAIT — Bearish bias is developing. 1H and 5M are bearish, but ${selectedInterval} has not produced a SELL setup yet.`
+    : `WAIT — Timeframes are not fully aligned. 1H: ${higherTrend}, ${selectedInterval}: ${setupSignal}, 5M: ${entryTrend}.`;
 confirmationReasonValue.textContent =
   confirmation;
     } catch (error) {
