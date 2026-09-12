@@ -1,6 +1,37 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    // Check secure login session
+const cookieHeader = request.headers.get("Cookie") || "";
+
+const sessionData = new TextEncoder().encode(env.SESSION_SECRET);
+const sessionHash = await crypto.subtle.digest("SHA-256", sessionData);
+
+const expectedSessionToken = Array.from(new Uint8Array(sessionHash))
+  .map((byte) => byte.toString(16).padStart(2, "0"))
+  .join("");
+
+const sessionCookie = cookieHeader
+  .split(";")
+  .map((cookie) => cookie.trim())
+  .find((cookie) => cookie.startsWith("richmond_session="));
+
+const currentSessionToken = sessionCookie
+  ? sessionCookie.substring("richmond_session=".length)
+  : "";
+
+const isLoggedIn = currentSessionToken === expectedSessionToken;
+
+const protectedPages = [
+  "/",
+  "/index.html",
+  "/pair.html"
+];
+
+if (protectedPages.includes(url.pathname) && !isLoggedIn) {
+  return Response.redirect(new URL("/login.html", request.url), 302);
+}
     // Secure login endpoint
 if (url.pathname === "/api/login" && request.method === "POST") {
   try {
