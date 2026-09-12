@@ -19,6 +19,7 @@ const sydneySession = document.getElementById("sydneySession");
 const tokyoSession = document.getElementById("tokyoSession");
 const londonSession = document.getElementById("londonSession");
 const newYorkSession = document.getElementById("newYorkSession");
+  const economicCalendar = document.getElementById("economicCalendar");
   if (!scanBtn || !scannerBody) return;
 function updateMarketStatusBadge() {
   if (!marketStatusBadge) return;
