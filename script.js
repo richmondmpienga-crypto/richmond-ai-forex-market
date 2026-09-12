@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log(`${APP_NAME} loaded successfully`);
 
   const scanBtn = document.getElementById("scanMarketBtn");
+  const marketStatusBadge = document.getElementById("marketStatusBadge");
   const scannerBody = document.getElementById("scannerBody");
   const aiAnalysis = document.getElementById("aiAnalysis");
 const emaValue = document.getElementById("emaValue");
@@ -16,7 +17,23 @@ const bbValue = document.getElementById("bbValue");
   const indicatorTitle = document.getElementById("indicatorTitle");
 
   if (!scanBtn || !scannerBody) return;
+function updateMarketStatusBadge() {
+  if (!marketStatusBadge) return;
 
+  const now = new Date();
+  const utcDay = now.getUTCDay();
+  const weekendClosed = utcDay === 6 || utcDay === 0;
+
+  if (weekendClosed) {
+    marketStatusBadge.innerHTML =
+      '<span class="live-dot"></span> MARKET CLOSED';
+  } else {
+    marketStatusBadge.innerHTML =
+      '<span class="live-dot"></span> MARKET SCANNER';
+  }
+}
+
+updateMarketStatusBadge();
   const sleep = (ms) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
