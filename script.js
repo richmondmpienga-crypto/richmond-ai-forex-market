@@ -30,9 +30,11 @@ function updateMarketStatusBadge() {
   if (weekendClosed) {
     marketStatusBadge.innerHTML =
       '<span class="live-dot"></span> MARKET CLOSED';
+    marketStatusBadge.classList.add("closed");
   } else {
     marketStatusBadge.innerHTML =
       '<span class="live-dot"></span> MARKET SCANNER';
+    marketStatusBadge.classList.remove("closed");
   }
 }
 
