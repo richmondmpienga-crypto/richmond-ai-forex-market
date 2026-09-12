@@ -429,7 +429,12 @@ if (isStale) {
   cells[6].textContent = "--";
   cells[7].textContent = "--";
   cells[8].textContent = "WAIT";
-  return;
+  return {
+  symbol,
+  signal: "WAIT",
+  score: 0,
+  marketClosed: true
+};
 }
       const analysis = analyzeMarket(data.values);
       pairResults[symbol] = analysis;
