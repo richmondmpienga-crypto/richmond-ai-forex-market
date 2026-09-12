@@ -1,6 +1,37 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    // Secure login endpoint
+if (url.pathname === "/api/login" && request.method === "POST") {
+  try {
+    const { username, password } = await request.json();
+
+    if (
+      username === env.LOGIN_USERNAME &&
+      password === env.LOGIN_PASSWORD
+    ) {
+      return Response.json({
+        success: true
+      });
+    }
+
+    return Response.json(
+      {
+        success: false,
+        error: "Invalid username or password"
+      },
+      { status: 401 }
+    );
+  } catch (error) {
+    return Response.json(
+      {
+        success: false,
+        error: "Invalid login request"
+      },
+      { status: 400 }
+    );
+  }
+}
 
     // Secure market-data endpoint
     if (url.pathname === "/api/forex") {
