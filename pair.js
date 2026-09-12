@@ -763,7 +763,7 @@ confirmationReasonValue.textContent =
     } catch (error) {
       console.error(error);
 
-      currentPrice.textContent = "Data Error";
+   currentPrice.textContent = "Market Closed";
       aiScore.textContent = "--";
       signalValue.textContent = "WAIT";
     }
