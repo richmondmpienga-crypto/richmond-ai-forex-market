@@ -48,7 +48,8 @@ updateMarketStatusBadge();
 
   const setSessionStatus = (element, isOpen) => {
     if (!element) return;
-
+element.classList.toggle("open", isOpen);
+element.classList.toggle("closed", !isOpen);
     const statusText = element.querySelector("small");
 
     if (statusText) {
