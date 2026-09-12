@@ -577,6 +577,7 @@ if (confirmedSignal === "BUY") {
     stopLoss = entry - riskDistance;
     tp1 = entry + riskDistance * 1.5;
     tp2 = entry + riskDistance * 2.5;
+ }
 const waitingForText =
   confirmedSignal === "BUY"
     ? `BUY CONFIRMED
