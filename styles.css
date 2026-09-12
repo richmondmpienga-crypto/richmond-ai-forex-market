@@ -423,3 +423,26 @@ footer {
     width: 100%;
   }
 }
+/* ===== RICHMOND AI BACKGROUND LOGO ===== */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("./richmond-ai-logo.png") center center / 650px auto no-repeat;
+  opacity: 0.055;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  body::before {
+    background-size: 360px auto;
+    opacity: 0.045;
+  }
+}
