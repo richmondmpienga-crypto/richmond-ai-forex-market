@@ -81,7 +81,7 @@ function loadEconomicCalendar() {
 
   economicCalendar.innerHTML = `
     <strong>Upcoming High-Impact News</strong>
-    <p>Loading economic calendar...</p>
+  <p>Economic calendar connection pending...</p>
   `;
 }
 
