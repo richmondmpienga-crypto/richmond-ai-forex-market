@@ -22,6 +22,7 @@ const tradingViewIntervals = {
 document.addEventListener("DOMContentLoaded", () => {
   const pairTitle = document.getElementById("pairTitle");
   const currentPrice = document.getElementById("currentPrice");
+ const marketStatus = document.getElementById("marketStatus");
   const aiScore = document.getElementById("aiScore");
   const signalValue = document.getElementById("signalValue");
   const timeframeValue = document.getElementById("timeframeValue");
@@ -532,11 +533,14 @@ const data = setupData;
         data.error ||
         !Array.isArray(data.values)
       ) {
+       marketStatus.style.display = "block";
+marketStatus.textContent =
+  "🔴 FOREX MARKET CLOSED — Scanner paused. Analysis will resume when live market data becomes available.";
         throw new Error(
           data.error || "No market data"
         );
       }
-
+marketStatus.style.display = "none";
       const result = analyse(data.values);
      const trendResult = analyse(trendData.values);
 const confirmationResult = analyse(confirmationData.values);
