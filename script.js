@@ -369,7 +369,30 @@ const bollinger = calculateBollingerBands(closes, 20, 2);
 
   async function scanPair(symbol, row) {
     const cells = row.querySelectorAll("td");
+const now = new Date();
+const utcDay = now.getUTCDay();
 
+const weekendClosed =
+  utcDay === 6 ||
+  utcDay === 0;
+
+if (weekendClosed) {
+  cells[1].textContent = "MARKET CLOSED";
+  cells[2].textContent = "--";
+  cells[3].textContent = "--";
+  cells[4].textContent = "--";
+  cells[5].textContent = "--";
+  cells[6].textContent = "--";
+  cells[7].textContent = "--";
+  cells[8].textContent = "WAIT";
+
+  return {
+    symbol,
+    signal: "WAIT",
+    score: 0,
+    marketClosed: true
+  };
+}
     cells[1].textContent = "Scanning...";
     cells[2].textContent = "Scanning...";
     cells[3].textContent = "...";
