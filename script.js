@@ -390,6 +390,18 @@ const bollinger = calculateBollingerBands(closes, 20, 2);
 
       const data = await response.json();
 
+      if (!Array.isArray(data.values) || data.values.length === 0) {
+  cells[1].textContent = "MARKET CLOSED";
+  cells[2].textContent = "--";
+  cells[3].textContent = "--";
+  cells[4].textContent = "--";
+  cells[5].textContent = "--";
+  cells[6].textContent = "--";
+  cells[7].textContent = "--";
+  cells[8].textContent = "WAIT";
+  return;
+}
+
       if (data.status === "error" || data.error) {
         throw new Error(
           data.message || data.error || "Market data error"
