@@ -87,6 +87,8 @@ function loadEconomicCalendar() {
 
 loadEconomicCalendar();
 updateTradingSessions();
+  setInterval(updateTradingSessions, 60000);
+
   const sleep = (ms) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
