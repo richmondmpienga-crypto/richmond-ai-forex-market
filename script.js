@@ -40,6 +40,7 @@ function updateMarketStatusBadge() {
 }
 
 updateMarketStatusBadge();
+  setInterval(updateMarketStatusBadge, 60000);
   function updateTradingSessions() {
   const now = new Date();
   const utcDay = now.getUTCDay();
