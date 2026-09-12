@@ -66,11 +66,22 @@ element.classList.toggle("closed", !isOpen);
     setSessionStatus(newYorkSession, false);
     return;
   }
-
-  const sydneyOpen = utcHour >= 21 || utcHour < 6;
-  const tokyoOpen = utcHour >= 0 && utcHour < 9;
-  const londonOpen = utcHour >= 7 && utcHour < 16;
-  const newYorkOpen = utcHour >= 12 && utcHour < 21;
+const getLocalHour = (timeZone) =>
+  Number(
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone,
+      hour: "2-digit",
+      hourCycle: "h23"
+    }).format(now)
+  );
+ const sydneyHour = getLocalHour("Australia/Sydney");
+const sydneyOpen = sydneyHour >= 8 && sydneyHour < 17;
+ const tokyoHour = getLocalHour("Asia/Tokyo");
+const tokyoOpen = tokyoHour >= 8 && tokyoHour < 17;
+  const londonHour = getLocalHour("Europe/London");
+const londonOpen = londonHour >= 8 && londonHour < 17;
+  const newYorkHour = getLocalHour("America/New_York");
+const newYorkOpen = newYorkHour >= 8 && newYorkHour < 17;
 
   setSessionStatus(sydneySession, sydneyOpen);
   setSessionStatus(tokyoSession, tokyoOpen);
