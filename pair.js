@@ -574,10 +574,18 @@ let tp2 = entry;
 const riskDistance = result.atr * 1.5;
 
 if (confirmedSignal === "BUY") {
-    stopLoss = entry - riskDistance;
-    tp1 = entry + riskDistance * 1.5;
-    tp2 = entry + riskDistance * 2.5;
- }
+  stopLoss = entry - riskDistance;
+  tp1 = entry + riskDistance * 1.5;
+  tp2 = entry + riskDistance * 2.5;
+} else if (confirmedSignal === "SELL") {
+  stopLoss = entry + riskDistance;
+  tp1 = entry - riskDistance * 1.5;
+  tp2 = entry - riskDistance * 2.5;
+}
+
+const riskReward =
+  confirmedSignal === "WAIT" ? "--" : "1 : 2.5";
+
 const waitingForText =
   confirmedSignal === "BUY"
     ? `BUY CONFIRMED
