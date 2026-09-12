@@ -411,7 +411,26 @@ const bollinger = calculateBollingerBands(closes, 20, 2);
       if (!Array.isArray(data.values)) {
         throw new Error("No candle data returned");
       }
+const latestCandle = data.values[0];
+const latestTime = latestCandle?.datetime
+  ? new Date(latestCandle.datetime)
+  : null;
 
+const isStale =
+  latestTime &&
+  Date.now() - latestTime.getTime() > 60 * 60 * 1000;
+
+if (isStale) {
+  cells[1].textContent = "MARKET CLOSED";
+  cells[2].textContent = "--";
+  cells[3].textContent = "--";
+  cells[4].textContent = "--";
+  cells[5].textContent = "--";
+  cells[6].textContent = "--";
+  cells[7].textContent = "--";
+  cells[8].textContent = "WAIT";
+  return;
+}
       const analysis = analyzeMarket(data.values);
       pairResults[symbol] = analysis;
       if (indicatorTitle) {
