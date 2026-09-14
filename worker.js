@@ -127,7 +127,10 @@ if (url.pathname === "/api/calendar") {
     });
   } catch (error) {
     return Response.json(
-      { error: "Unable to retrieve economic calendar" },
+     {
+  error: "Unable to retrieve economic calendar",
+  details: error.message
+},
       { status: 500 }
     );
   }
