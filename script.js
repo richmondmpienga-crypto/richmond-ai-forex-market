@@ -564,9 +564,14 @@ previousSignals[symbol] = analysis.signal;
   previousSignal !== analysis.signal &&
   (analysis.signal === "BUY" || analysis.signal === "SELL")
 ) {
-  alert(
-    `${symbol} signal changed to ${analysis.signal} (${analysis.score}%)`
-  );
+  if (signalAlert) {
+  signalAlert.hidden = false;
+  signalAlert.textContent =
+    `${symbol} SIGNAL: ${analysis.signal} • AI Score ${analysis.score}%`;
+
+  signalAlert.classList.remove("buy", "sell");
+  signalAlert.classList.add(analysis.signal.toLowerCase());
+}
 }
       if (indicatorTitle) {
   indicatorTitle.textContent = `Technical Indicators — ${symbol}`;
