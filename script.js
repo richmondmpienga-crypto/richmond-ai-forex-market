@@ -557,6 +557,16 @@ if (isStale) {
 
       const previousSignal = previousSignals[symbol];
 previousSignals[symbol] = analysis.signal;
+
+      if (
+  previousSignal &&
+  previousSignal !== analysis.signal &&
+  (analysis.signal === "BUY" || analysis.signal === "SELL")
+) {
+  alert(
+    `${symbol} signal changed to ${analysis.signal} (${analysis.score}%)`
+  );
+}
       if (indicatorTitle) {
   indicatorTitle.textContent = `Technical Indicators — ${symbol}`;
 }
