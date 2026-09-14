@@ -1,6 +1,6 @@
 const APP_NAME = "Richmond AI Forex Market";
 const pairResults = {};
-
+const previousSignals = {};
 document.addEventListener("DOMContentLoaded", () => {
   console.log(`${APP_NAME} loaded successfully`);
 
