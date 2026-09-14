@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const scanBtn = document.getElementById("scanMarketBtn");
   const marketStatusBadge = document.getElementById("marketStatusBadge");
+  const logoutButton = document.getElementById("logoutButton");
   const scannerBody = document.getElementById("scannerBody");
   const aiAnalysis = document.getElementById("aiAnalysis");
 const emaValue = document.getElementById("emaValue");
@@ -735,4 +736,17 @@ return;
     }
   });
 });
+if (logoutButton) {
+  logoutButton.addEventListener("click", async () => {
+    try {
+      await fetch("/api/logout", {
+        method: "POST"
+      });
+
+      window.location.href = "/login.html";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  });
+}  
 });
