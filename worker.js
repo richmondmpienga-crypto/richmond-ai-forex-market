@@ -90,7 +90,48 @@ if (url.pathname === "/api/login" && request.method === "POST") {
     );
   }
 }
+// Secure economic calendar endpoint
+if (url.pathname === "/api/calendar") {
+  if (!env.FMP_API_KEY) {
+    return Response.json(
+      { error: "FMP API key is not configured" },
+      { status: 500 }
+    );
+  }
 
+  const today = new Date();
+  const future = new Date(today);
+  future.setDate(future.getDate() + 7);
+
+  const formatDate = (date) =>
+    date.toISOString().slice(0, 10);
+
+  const from = formatDate(today);
+  const to = formatDate(future);
+
+  const apiUrl =
+    "https://financialmodelingprep.com/stable/economic-calendar" +
+    "?from=" + encodeURIComponent(from) +
+    "&to=" + encodeURIComponent(to) +
+    "&apikey=" + encodeURIComponent(env.FMP_API_KEY);
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    return Response.json(data, {
+      status: response.status,
+      headers: {
+        "Cache-Control": "no-store"
+      }
+    });
+  } catch (error) {
+    return Response.json(
+      { error: "Unable to retrieve economic calendar" },
+      { status: 500 }
+    );
+  }
+}
     // Secure market-data endpoint
     if (url.pathname === "/api/forex") {
       const symbol = url.searchParams.get("symbol") || "EUR/USD";
