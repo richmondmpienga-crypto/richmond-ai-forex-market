@@ -32,6 +32,18 @@ const protectedPages = [
 if (protectedPages.includes(url.pathname) && !isLoggedIn) {
   return Response.redirect(new URL("/login.html", request.url), 302);
 }
+    // Secure logout endpoint
+if (url.pathname === "/api/logout" && request.method === "POST") {
+  return Response.json(
+    { success: true },
+    {
+      headers: {
+        "Set-Cookie":
+          "richmond_session=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0"
+      }
+    }
+  );
+}
     // Secure login endpoint
 if (url.pathname === "/api/login" && request.method === "POST") {
   try {
