@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log(`${APP_NAME} loaded successfully`);
 
   const scanBtn = document.getElementById("scanMarketBtn");
+  const signalAlert = document.getElementById("signalAlert");
   const marketStatusBadge = document.getElementById("marketStatusBadge");
   const logoutButton = document.getElementById("logoutButton");
   const scannerBody = document.getElementById("scannerBody");
