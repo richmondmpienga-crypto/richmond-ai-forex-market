@@ -554,6 +554,9 @@ if (isStale) {
 }
       const analysis = analyzeMarket(data.values);
       pairResults[symbol] = analysis;
+
+      const previousSignal = previousSignals[symbol];
+previousSignals[symbol] = analysis.signal;
       if (indicatorTitle) {
   indicatorTitle.textContent = `Technical Indicators — ${symbol}`;
 }
