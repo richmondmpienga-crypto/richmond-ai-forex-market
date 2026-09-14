@@ -117,7 +117,7 @@ if (url.pathname === "/api/calendar") {
 
   try {
     const response = await fetch(apiUrl);
-    const data = await response.json();
+   const data = await response.text();
 
     return Response.json(data, {
       status: response.status,
