@@ -439,7 +439,29 @@ body > * {
   position: relative;
   z-index: 1;
 }
+/* ===== SIGNAL ALERT ===== */
 
+.signal-alert {
+  margin: 16px 0;
+  padding: 16px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.signal-alert.buy {
+  background: rgba(0, 200, 120, 0.15);
+  border: 1px solid #00c878;
+  color: #00e68a;
+}
+
+.signal-alert.sell {
+  background: rgba(255, 70, 70, 0.15);
+  border: 1px solid #ff4646;
+  color: #ff5c5c;
+}
 @media (max-width: 768px) {
   body::before {
     background-size: 360px auto;
