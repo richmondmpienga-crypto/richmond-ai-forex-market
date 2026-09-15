@@ -457,7 +457,8 @@ const bollinger = calculateBollingerBands(closes, 20, 2);
     lower: bollinger.lower.toFixed(5)
   },
 
-  price: currentClose
+price: currentClose,
+entryPrice: currentClose
 };
   }
 
