@@ -12,6 +12,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const forexModeBtn = document.getElementById("forexModeBtn");
 const derivModeBtn = document.getElementById("derivModeBtn");
  let currentMarketMode = "forex";
+  if (forexModeBtn && derivModeBtn) {
+    forexModeBtn.addEventListener("click", () => {
+        currentMarketMode = "forex";
+
+        forexModeBtn.classList.add("active");
+        derivModeBtn.classList.remove("active");
+    });
+
+    derivModeBtn.addEventListener("click", () => {
+        currentMarketMode = "deriv";
+
+        derivModeBtn.classList.add("active");
+        forexModeBtn.classList.remove("active");
+    });
+}
   const aiAnalysis = document.getElementById("aiAnalysis");
 const emaValue = document.getElementById("emaValue");
 const rsiValue = document.getElementById("rsiValue");
