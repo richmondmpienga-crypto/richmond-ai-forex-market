@@ -756,6 +756,34 @@ if (signalAlert && allSignals.length) {
 
     scanBtn.disabled = false;
     scanBtn.textContent = "Scan Market";
+    const readinessRank = {
+    READY: 0,
+    DEVELOPING: 1,
+    WAIT: 2
+};
+
+const sortedRows = Array.from(scannerBody.querySelectorAll("tr"))
+    .sort((a, b) => {
+        const aCells = a.querySelectorAll("td");
+        const bCells = b.querySelectorAll("td");
+
+        const aReadiness = aCells[9]?.textContent.trim() || "WAIT";
+        const bReadiness = bCells[9]?.textContent.trim() || "WAIT";
+
+        const readinessDiff =
+            readinessRank[aReadiness] - readinessRank[bReadiness];
+
+        if (readinessDiff !== 0) {
+            return readinessDiff;
+        }
+
+        const aScore = Number(aCells[7]?.textContent) || 0;
+        const bScore = Number(bCells[7]?.textContent) || 0;
+
+        return bScore - aScore;
+    });
+
+sortedRows.forEach((row) => scannerBody.appendChild(row));
   });
   const pairResults = {};
 
