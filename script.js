@@ -628,6 +628,12 @@ if (cells[9]) {
     }
 
     cells[9].textContent = readiness;
+  cells[9].style.color =
+    readiness === "READY"
+        ? "#00d084"
+        : readiness === "DEVELOPING"
+        ? "#ffb000"
+        : "#ffb000";
 }
       return {
         symbol,
