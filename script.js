@@ -686,10 +686,21 @@ const allSignals = [...buySignals, ...sellSignals];
 if (signalAlert && allSignals.length) {
   signalAlert.hidden = false;
   signalAlert.innerHTML = allSignals
-  .map((r) => {
-    const colorClass = r.signal === "BUY" ? "buy-text" : "sell-text";
-    return `${r.symbol} <span class="${colorClass}">${r.signal}</span> • ${r.score}%`;
-  })
+ .map((r) => {
+  const colorClass = r.signal === "BUY" ? "buy-text" : "sell-text";
+
+  let strength = "MODERATE";
+
+  if (r.signal === "BUY") {
+    if (r.score >= 85) strength = "VERY STRONG";
+    else if (r.score >= 75) strength = "STRONG";
+  } else if (r.signal === "SELL") {
+    if (r.score <= 15) strength = "VERY STRONG";
+    else if (r.score <= 25) strength = "STRONG";
+  }
+
+  return `${r.symbol} <span class="${colorClass}">${r.signal}</span> • ${r.score}% • ${strength}`;
+})
   .join(" &nbsp; | &nbsp; ");
 
   signalAlert.classList.remove("buy", "sell");
