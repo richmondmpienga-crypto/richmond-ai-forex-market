@@ -830,6 +830,14 @@ if (!response.ok) {
     throw new Error(`Calendar request failed: ${response.status}`);
 }
     const result = await response.json();
+    if (result.rateLimited) {
+    economicCalendar.innerHTML = `
+        <strong>Upcoming Economic News</strong>
+        <p>Calendar temporarily unavailable due to provider rate limit.</p>
+    `;
+    return;
+}
+   
     const events = Array.isArray(result) ? result : result.data;
 
     if (!Array.isArray(events) || events.length === 0) {
