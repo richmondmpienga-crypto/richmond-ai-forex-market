@@ -519,3 +519,25 @@ body > * {
     font-weight: 600;
 }
 }
+
+.market-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.market-mode {
+  background: #0b1b33;
+  border: 1px solid #1f3d63;
+  color: #9fb3c8;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.market-mode.active {
+  background: #0f6fff;
+  border-color: #0f6fff;
+  color: #ffffff;
+}
