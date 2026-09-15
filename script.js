@@ -803,7 +803,8 @@ async function loadBusinessQuantCalendar() {
   .filter(
   (event) =>
     event.next_release &&
-    ["Inflation", "Labor", "Growth", "Rates"].includes(event.category)
+   ["Inflation", "Labor", "Growth", "Rates"].includes(event.category) &&
+!/(breakeven|yield curve|forward inflation)/i.test(event.name || "")
 )
       .sort(
         (a, b) =>
