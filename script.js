@@ -802,7 +802,7 @@ async function loadBusinessQuantCalendar() {
     const upcoming = events
  .filter((event) =>
   event.next_release &&
-   !/(breakeven|forward inflation|effective federal funds rate|federal funds rate,\s*daily)/i.test(event.name || "") &&
+  !/(breakeven|forward inflation|effective federal funds rate|federal funds rate,\s*daily|retail sales,\s*monthly change|real retail sales)/i.test(event.name || "") &&
   /(consumer price|cpi|inflation rate|nonfarm|non-farm|payroll|unemployment rate|employment change|gdp|gross domestic product|retail sales|interest rate decision|fed funds rate|federal funds rate|jobless claims|pce price|producer price|ppi)/i.test(event.name || "")
 )
       .sort(
