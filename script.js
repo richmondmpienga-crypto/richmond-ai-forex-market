@@ -681,7 +681,22 @@ if (signalAlert) {
     const sellSignals = results.filter(
       (r) => r.signal === "SELL"
     );
+const allSignals = [...buySignals, ...sellSignals];
 
+if (signalAlert && allSignals.length) {
+  signalAlert.hidden = false;
+  signalAlert.textContent = allSignals
+    .map((r) => `${r.symbol} ${r.signal} • ${r.score}%`)
+    .join("   |   ");
+
+  signalAlert.classList.remove("buy", "sell");
+
+  if (buySignals.length && !sellSignals.length) {
+    signalAlert.classList.add("buy");
+  } else if (sellSignals.length && !buySignals.length) {
+    signalAlert.classList.add("sell");
+  }
+}
     const errors = results.filter((r) => r.error);
 
     if (aiAnalysis) {
