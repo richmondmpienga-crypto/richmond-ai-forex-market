@@ -495,3 +495,22 @@ body > * {
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== TRADE LEVEL VALUE COLORS ===== */
+
+#entryValue {
+    color: #38bdf8;
+}
+
+#stopLossValue {
+    color: #ff5c5c;
+}
+
+#tp1Value,
+#tp2Value {
+    color: #00e68a;
+}
+
+#riskRewardValue {
+    color: #f59e0b;
+}
