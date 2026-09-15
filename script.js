@@ -618,7 +618,17 @@ if (bbValue) {
       } else {
         cells[8].style.color = "#ffb000";
       }
+if (cells[9]) {
+    let readiness = "WAIT";
 
+    if (analysis.signal === "BUY" || analysis.signal === "SELL") {
+        readiness = "READY";
+    } else if (analysis.score >= 60 || analysis.score <= 40) {
+        readiness = "DEVELOPING";
+    }
+
+    cells[9].textContent = readiness;
+}
       return {
         symbol,
         ...analysis
@@ -634,7 +644,7 @@ if (bbValue) {
       cells[6].textContent = "—";
       cells[7].textContent = "0";
       cells[8].textContent = "WAIT";
-
+if (cells[9]) cells[9].textContent = "WAIT";
       return {
         symbol,
         error: error.message
