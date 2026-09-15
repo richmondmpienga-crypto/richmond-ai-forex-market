@@ -593,8 +593,9 @@ if (confirmedSignal === "BUY") {
 }
 
 const riskReward =
-  confirmedSignal === "WAIT" ? "--" : "1 : 2.5";
-
+    confirmedSignal === "WAIT"
+        ? "--"
+        : "TP1 1:1.5 | TP2 1:2.5";
 const waitingForText =
   confirmedSignal === "BUY"
     ? `BUY CONFIRMED
