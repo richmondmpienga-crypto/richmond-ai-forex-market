@@ -90,47 +90,38 @@ if (url.pathname === "/api/login" && request.method === "POST") {
     );
   }
 }
-// Secure economic calendar endpoint
+// Secure Business Quant economic calendar endpoint
 if (url.pathname === "/api/calendar") {
-  if (!env.FMP_API_KEY) {
+  if (!env.BUSINESS_QUANT_API_KEY) {
     return Response.json(
-      { error: "FMP API key is not configured" },
+      { error: "Business Quant API key is not configured" },
       { status: 500 }
     );
   }
 
-  const today = new Date();
-  const future = new Date(today);
-  future.setDate(future.getDate() + 7);
-
-  const formatDate = (date) =>
-    date.toISOString().slice(0, 10);
-
-  const from = formatDate(today);
-  const to = formatDate(future);
-
   const apiUrl =
-    "https://financialmodelingprep.com/stable/economic-calendar" +
-    "?from=" + encodeURIComponent(from) +
-    "&to=" + encodeURIComponent(to) +
-    "&apikey=" + encodeURIComponent(env.FMP_API_KEY);
+    "https://data.businessquant.com/calendar/economic" +
+    "?api_key=" +
+    encodeURIComponent(env.BUSINESS_QUANT_API_KEY);
 
   try {
     const response = await fetch(apiUrl);
-   const data = await response.text();
+    const data = await response.text();
 
-    return Response.json(data, {
+    return new Response(data, {
       status: response.status,
       headers: {
+        "Content-Type":
+          response.headers.get("Content-Type") || "application/json",
         "Cache-Control": "no-store"
       }
     });
   } catch (error) {
     return Response.json(
-     {
-  error: "Unable to retrieve economic calendar",
-  details: error.message
-},
+      {
+        error: "Unable to retrieve Business Quant economic calendar",
+        details: error.message
+      },
       { status: 500 }
     );
   }
