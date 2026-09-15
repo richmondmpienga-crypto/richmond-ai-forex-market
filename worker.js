@@ -105,25 +105,53 @@ if (url.pathname === "/api/calendar") {
     encodeURIComponent(env.BUSINESS_QUANT_API_KEY);
 
   try {
+    const cache = caches.default;
+    const cacheKey = new Request(request.url, {
+        method: "GET"
+    });
+
+    const cachedResponse = await cache.match(cacheKey);
+
+    if (cachedResponse) {
+        return cachedResponse;
+    }
+
     const response = await fetch(apiUrl);
     const data = await response.text();
 
-    return new Response(data, {
-      status: response.status,
-      headers: {
-        "Content-Type":
-          response.headers.get("Content-Type") || "application/json",
-        "Cache-Control": "no-store"
-      }
+    // Never cache provider errors or rate-limit responses
+    if (!response.ok) {
+        return new Response(data, {
+            status: response.status,
+            headers: {
+                "Content-Type":
+                    response.headers.get("Content-Type") || "application/json",
+                "Cache-Control": "no-store"
+            }
+        });
+    }
+
+    const workerResponse = new Response(data, {
+        status: 200,
+        headers: {
+            "Content-Type":
+                response.headers.get("Content-Type") || "application/json",
+            "Cache-Control": "public, max-age=3600"
+        }
     });
-  } catch (error) {
+
+    await cache.put(cacheKey, workerResponse.clone());
+
+    return workerResponse;
+} catch (error) {
     return Response.json(
-      {
-        error: "Unable to retrieve Business Quant economic calendar",
-        details: error.message
-      },
-      { status: 500 }
+        {
+            error: "Unable to retrieve Business Quant economic calendar",
+            details: error.message
+        },
+        { status: 500 }
     );
+}
   }
 }
     // Secure market-data endpoint
