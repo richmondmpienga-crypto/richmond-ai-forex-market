@@ -644,7 +644,11 @@ if (bbValue) {
   scanBtn.addEventListener("click", async () => {
     scanBtn.disabled = true;
     scanBtn.textContent = "Scanning Market...";
-
+if (signalAlert) {
+  signalAlert.hidden = true;
+  signalAlert.textContent = "";
+  signalAlert.classList.remove("buy", "sell");
+}
     if (aiAnalysis) {
       aiAnalysis.textContent =
         "Richmond AI is downloading live 15-minute candles and analysing market structure, trend, liquidity and momentum...";
