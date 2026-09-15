@@ -153,7 +153,7 @@ if (url.pathname === "/api/calendar") {
     );
 }
   }
-}
+
     // Secure market-data endpoint
     if (url.pathname === "/api/forex") {
       const symbol = url.searchParams.get("symbol") || "EUR/USD";
