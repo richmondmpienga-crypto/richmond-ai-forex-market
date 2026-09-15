@@ -800,10 +800,10 @@ async function loadBusinessQuantCalendar() {
     }
 
     const upcoming = events
-     .filter(
+  .filter(
   (event) =>
     event.next_release &&
-    event.category !== "Trade"
+    ["Inflation", "Labor", "Growth", "Rates"].includes(event.category)
 )
       .sort(
         (a, b) =>
