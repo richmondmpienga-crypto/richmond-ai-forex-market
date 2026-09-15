@@ -800,7 +800,11 @@ async function loadBusinessQuantCalendar() {
     }
 
     const upcoming = events
-      .filter((event) => event.next_release)
+     .filter(
+  (event) =>
+    event.next_release &&
+    event.category !== "Trade"
+)
       .sort(
         (a, b) =>
           new Date(a.next_release) - new Date(b.next_release)
