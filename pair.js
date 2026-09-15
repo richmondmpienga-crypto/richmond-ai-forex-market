@@ -529,17 +529,19 @@ const [trendData, setupData, confirmationData] = await Promise.all([
 // Keep the existing analysis working from the selected timeframe
 const data = setupData;
 
-      if (
-        data.error ||
-        !Array.isArray(data.values)
-      ) {
-       marketStatus.style.display = "block";
-marketStatus.textContent =
-  "🔴 FOREX MARKET CLOSED — Scanner paused. Analysis will resume when live market data becomes available.";
-        throw new Error(
-          data.error || "No market data"
-        );
-      }
+     if (
+    data.error ||
+    !Array.isArray(data.values)
+) {
+    marketStatus.style.display = "block";
+
+    marketStatus.textContent =
+        `⚠️ MARKET DATA UNAVAILABLE — ${data.error || "No live market data received"}`;
+
+    throw new Error(
+        data.error || "No market data"
+    );
+}
 marketStatus.style.display = "none";
       const result = analyse(data.values);
      const trendResult = analyse(trendData.values);
