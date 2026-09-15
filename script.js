@@ -818,10 +818,17 @@ async function loadBusinessQuantCalendar() {
   try {
     const response = await fetch("/api/calendar");
 
-    if (!response.ok) {
-      throw new Error(`Calendar request failed: ${response.status}`);
-    }
+    if (response.status === 429) {
+    economicCalendar.innerHTML = `
+        <strong>Upcoming Economic News</strong>
+        <p>Calendar temporarily unavailable due to provider rate limit.</p>
+    `;
+    return;
+}
 
+if (!response.ok) {
+    throw new Error(`Calendar request failed: ${response.status}`);
+}
     const result = await response.json();
     const events = Array.isArray(result) ? result : result.data;
 
