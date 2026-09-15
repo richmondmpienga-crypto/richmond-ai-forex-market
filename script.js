@@ -767,5 +767,80 @@ if (logoutButton) {
       console.error("Logout failed:", error);
     }
   });
+  
 }  
 });
+
+async function loadBusinessQuantCalendar() {
+  const economicCalendar = document.getElementById("economicCalendar");
+
+  if (!economicCalendar) return;
+
+  economicCalendar.innerHTML = `
+    <strong>Upcoming Economic News</strong>
+    <p>Loading economic calendar...</p>
+  `;
+
+  try {
+    const response = await fetch("/api/calendar");
+
+    if (!response.ok) {
+      throw new Error(`Calendar request failed: ${response.status}`);
+    }
+
+    const result = await response.json();
+    const events = Array.isArray(result) ? result : result.data;
+
+    if (!Array.isArray(events) || events.length === 0) {
+      economicCalendar.innerHTML = `
+        <strong>Upcoming Economic News</strong>
+        <p>No upcoming economic releases found.</p>
+      `;
+      return;
+    }
+
+    const upcoming = events
+      .filter((event) => event.next_release)
+      .sort(
+        (a, b) =>
+          new Date(a.next_release) - new Date(b.next_release)
+      )
+      .slice(0, 5);
+
+    if (upcoming.length === 0) {
+      economicCalendar.innerHTML = `
+        <strong>Upcoming Economic News</strong>
+        <p>No scheduled releases available.</p>
+      `;
+      return;
+    }
+
+    economicCalendar.innerHTML = `
+      <strong>Upcoming Economic News</strong>
+      ${upcoming
+        .map(
+          (event) => `
+            <div class="calendar-event">
+              <strong>${event.name || "Economic Release"}</strong>
+              <div>
+                ${event.next_release}
+                ${event.days_until_next != null
+                  ? ` • ${event.days_until_next} day(s)`
+                  : ""}
+              </div>
+            </div>
+          `
+        )
+        .join("")}
+    `;
+  } catch (error) {
+    console.error("Economic calendar failed:", error);
+
+    economicCalendar.innerHTML = `
+      <strong>Upcoming Economic News</strong>
+      <p>Unable to load economic calendar.</p>
+    `;
+  }
+}
+
+loadBusinessQuantCalendar();
