@@ -628,6 +628,10 @@ if (cells[9]) {
     }
 
     cells[9].textContent = readiness;
+  if (cells[10]) {
+    cells[10].textContent = "Just now";
+    cells[10].dataset.updatedAt = Date.now();
+}
   cells[9].style.color =
     readiness === "READY"
         ? "#00d084"
@@ -651,6 +655,10 @@ if (cells[9]) {
       cells[7].textContent = "0";
       cells[8].textContent = "WAIT";
 if (cells[9]) cells[9].textContent = "WAIT";
+      if (cells[10]) {
+    cells[10].textContent = "--";
+    delete cells[10].dataset.updatedAt;
+}
       return {
         symbol,
         error: error.message
