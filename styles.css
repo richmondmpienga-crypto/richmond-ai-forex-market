@@ -475,3 +475,23 @@ body > * {
     opacity: 0.045;
   }
 }
+/* ===== RICHMOND AI TRADE LEVELS GRID ===== */
+
+.trade-levels-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.trade-levels-grid .indicator-item {
+    background: #10233c;
+    border: 1px solid #1d3858;
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+@media (max-width: 768px) {
+    .trade-levels-grid {
+        grid-template-columns: 1fr;
+    }
+}
