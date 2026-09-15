@@ -803,8 +803,7 @@ async function loadBusinessQuantCalendar() {
   .filter(
   (event) =>
     event.next_release &&
-   ["Inflation", "Labor", "Growth", "Rates"].includes(event.category) &&
-!/(breakeven|yield curve|forward inflation|effective federal funds|federal funds rate, daily|interest on reserve|bank prime loan)/i.test(event.name || "")
+    /(consumer price|cpi|inflation rate|nonfarm|non-farm|payroll|unemployment|employment|gdp|gross domestic product|retail sales|interest rate decision|federal funds rate|fed funds rate|jobless claims|pce price|producer price|ppi)/i.test(event.name || "")
 )
       .sort(
         (a, b) =>
