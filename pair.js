@@ -575,8 +575,13 @@ let stopLoss = entry;
 let tp1 = entry;
 let tp2 = entry;
 
-const riskDistance = result.atr * 1.5;
+const minimumRiskDistance =
+    symbol === "XAU/USD" ? 3.0 : 0.0010;
 
+const riskDistance = Math.max(
+    result.atr * 1.5,
+    minimumRiskDistance
+);
 if (confirmedSignal === "BUY") {
   stopLoss = entry - riskDistance;
   tp1 = entry + riskDistance * 1.5;
