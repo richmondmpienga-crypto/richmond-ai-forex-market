@@ -113,6 +113,27 @@ updateTradingSessions();
 
   const sleep = (ms) =>
     new Promise((resolve) => setTimeout(resolve, ms));
+  function updateSignalAges() {
+    document.querySelectorAll(".updated").forEach((cell) => {
+        const updatedAt = Number(cell.dataset.updatedAt);
+
+        if (!updatedAt) return;
+
+        const seconds = Math.floor((Date.now() - updatedAt) / 1000);
+
+        if (seconds < 10) {
+            cell.textContent = "Just now";
+        } else if (seconds < 60) {
+            cell.textContent = `${seconds} sec ago`;
+        } else {
+            const minutes = Math.floor(seconds / 60);
+            cell.textContent = `${minutes} min ago`;
+        }
+    });
+}
+
+setInterval(updateSignalAges, 1000); 
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   function ema(values, period) {
     if (!values || values.length < period) return null;
