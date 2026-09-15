@@ -560,8 +560,8 @@ if (isStale) {
 previousSignals[symbol] = analysis.signal;
 
       if (
-  previousSignal &&
-  previousSignal !== analysis.signal &&
+(!previousSignal || previousSignal !== analysis.signal) &&
+ 
   (analysis.signal === "BUY" || analysis.signal === "SELL")
 ) {
   if (signalAlert) {
