@@ -15,14 +15,45 @@ const derivModeBtn = document.getElementById("derivModeBtn");
   if (forexModeBtn && derivModeBtn) {
     forexModeBtn.addEventListener("click", () => {
         currentMarketMode = "forex";
+const forexSymbols = [
+    "EUR/USD",
+    "GBP/USD",
+    "USD/JPY",
+    "XAU/USD"
+];
 
+const rows = scannerBody.querySelectorAll("tr");
+
+rows.forEach((row, index) => {
+    const cells = row.querySelectorAll("td");
+
+    if (cells[0] && forexSymbols[index]) {
+        cells[0].textContent = forexSymbols[index];
+    }
+});
         forexModeBtn.classList.add("active");
         derivModeBtn.classList.remove("active");
     });
 
     derivModeBtn.addEventListener("click", () => {
         currentMarketMode = "deriv";
+     
+const derivSymbols = [
+    "Volatility 10 Index",
+    "Volatility 25 Index",
+    "Volatility 50 Index",
+    "Volatility 75 Index",
+];
 
+const rows = scannerBody.querySelectorAll("tr");
+
+rows.forEach((row, index) => {
+    const cells = row.querySelectorAll("td");
+
+    if (cells[0] && derivSymbols[index]) {
+        cells[0].textContent = derivSymbols[index];
+    }
+});
         derivModeBtn.classList.add("active");
         forexModeBtn.classList.remove("active");
     });
