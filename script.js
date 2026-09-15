@@ -685,9 +685,12 @@ const allSignals = [...buySignals, ...sellSignals];
 
 if (signalAlert && allSignals.length) {
   signalAlert.hidden = false;
-  signalAlert.textContent = allSignals
-    .map((r) => `${r.symbol} ${r.signal} • ${r.score}%`)
-    .join("   |   ");
+  signalAlert.innerHTML = allSignals
+  .map((r) => {
+    const colorClass = r.signal === "BUY" ? "buy-text" : "sell-text";
+    return `${r.symbol} <span class="${colorClass}">${r.signal}</span> • ${r.score}%`;
+  })
+  .join(" &nbsp; | &nbsp; ");
 
   signalAlert.classList.remove("buy", "sell");
 
