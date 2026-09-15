@@ -120,16 +120,31 @@ if (url.pathname === "/api/calendar") {
     const data = await response.text();
 
     // Never cache provider errors or rate-limit responses
-    if (!response.ok) {
-        return new Response(data, {
-            status: response.status,
+    if (response.status === 429) {
+    return Response.json(
+        {
+            rateLimited: true,
+            data: []
+        },
+        {
+            status: 200,
             headers: {
-                "Content-Type":
-                    response.headers.get("Content-Type") || "application/json",
                 "Cache-Control": "no-store"
             }
-        });
-    }
+        }
+    );
+}
+
+if (!response.ok) {
+    return new Response(data, {
+        status: response.status,
+        headers: {
+            "Content-Type":
+                response.headers.get("Content-Type") || "application/json",
+            "Cache-Control": "no-store"
+        }
+    });
+}
 
     const workerResponse = new Response(data, {
         status: 200,
