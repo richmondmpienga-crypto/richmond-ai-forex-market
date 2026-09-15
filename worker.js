@@ -144,21 +144,57 @@ const interval = url.searchParams.get("interval") || "15min";
         "&outputsize=200" +
         "&apikey=" + encodeURIComponent(env.TWELVE_DATA_API_KEY);
 
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+     try {
+    const cache = caches.default;
+    const cacheKey = new Request(request.url, request);
 
-        return Response.json(data, {
-          headers: {
-            "Cache-Control": "no-store"
-          }
-        });
-      } catch (error) {
-        return Response.json(
-          { error: "Unable to retrieve market data" },
-          { status: 500 }
-        );
-      }
+    const cachedResponse = await cache.match(cacheKey);
+
+    if (cachedResponse) {
+        return cachedResponse;
+    }
+
+    const response = await fetch(apiUrl);
+const data = await response.json();
+
+if (
+    !response.ok ||
+    data.status === "error" ||
+    data.error ||
+    !Array.isArray(data.values)
+) {
+    return Response.json(
+        {
+            error: data.message || data.error || "Market data provider unavailable",
+            providerStatus: response.status
+        },
+        {
+            status: response.status === 429 ? 429 : 502,
+            headers: {
+                "Cache-Control": "no-store"
+            }
+        }
+    );
+}
+
+    const workerResponse = Response.json(data, {
+        headers: {
+            "Cache-Control": "public, max-age=60"
+        }
+    });
+
+    await cache.put(cacheKey, workerResponse.clone());
+
+    return workerResponse;
+} catch (error) {
+    return Response.json(
+        {
+            error: "Unable to retrieve market data",
+            details: error.message
+        },
+        { status: 500 }
+    );
+}
     }
 
     // Everything else continues to load the website normally.
