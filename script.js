@@ -800,10 +800,9 @@ async function loadBusinessQuantCalendar() {
     }
 
     const upcoming = events
-  .filter(
-  (event) =>
-    event.next_release &&
-    /(consumer price|cpi|inflation rate|nonfarm|non-farm|payroll|unemployment|employment|gdp|gross domestic product|retail sales|interest rate decision|federal funds rate|fed funds rate|jobless claims|pce price|producer price|ppi)/i.test(event.name || "")
+ .filter((event) =>
+  event.next_release &&
+  /(consumer price|cpi|inflation rate|nonfarm|non-farm|payroll|unemployment rate|employment change|gdp|gross domestic product|retail sales|interest rate decision|fed funds rate|federal funds rate|jobless claims|pce price|producer price|ppi)/i.test(event.name || "")
 )
       .sort(
         (a, b) =>
