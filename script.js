@@ -757,43 +757,7 @@ previousSignals[symbol] = analysis.signal;
   signalAlert.classList.add(analysis.signal.toLowerCase());
 }
 }
-      if (indicatorTitle) {
-  indicatorTitle.textContent = `Technical Indicators — ${symbol}`;
-}
-
-      cells[1].textContent = analysis.trend;
-      cells[2].textContent = analysis.structure;
-      cells[3].textContent = analysis.bos;
-      cells[4].textContent = analysis.liquidity;
-      cells[5].textContent = analysis.orderBlock;
-      cells[6].textContent = analysis.volatility;
-      cells[7].textContent = analysis.score;
-      cells[8].textContent = analysis.signal;
-if (emaValue) {
-  emaValue.textContent =
-    `${analysis.ema20} / ${analysis.ema50} / ${analysis.ema200}`;
-}
-
-if (rsiValue) {
-  rsiValue.textContent = analysis.rsi;
-}
-
-if (macdValue) {
-  macdValue.textContent = analysis.macd;
-}
-
-if (adxValue) {
-  adxValue.textContent = analysis.adx;
-}
-
-if (atrValue) {
-  atrValue.textContent = analysis.atr;
-}
-
-if (bbValue) {
-  bbValue.textContent =
-    `${analysis.bollinger.upper} / ${analysis.bollinger.middle} / ${analysis.bollinger.lower}`;
-}
+    
       if (analysis.signal === "BUY") {
         cells[8].style.color = "#00d084";
       } else if (analysis.signal === "SELL") {
@@ -891,7 +855,66 @@ if (signalAlert) {
       (r) => r.signal === "SELL"
     );
 const allSignals = [...buySignals, ...sellSignals];
+const validResults = results.filter((r) => !r.error);
 
+const indicatorResult =
+    allSignals.length > 0
+        ? allSignals.reduce((best, current) => {
+              const bestConfidence =
+                  best.signal === "SELL" ? 100 - best.score : best.score;
+
+              const currentConfidence =
+                  current.signal === "SELL"
+                      ? 100 - current.score
+                      : current.score;
+
+              return currentConfidence > bestConfidence
+                  ? current
+                  : best;
+          })
+        : validResults.reduce((best, current) => {
+              if (!best) return current;
+
+              const bestStrength = Math.abs(best.score - 50);
+              const currentStrength = Math.abs(current.score - 50);
+
+              return currentStrength > bestStrength
+                  ? current
+                  : best;
+          }, null);
+
+if (indicatorResult) {
+    if (indicatorTitle) {
+        indicatorTitle.textContent =
+            `Technical Indicators — ${indicatorResult.symbol}`;
+    }
+
+    if (emaValue) {
+        emaValue.textContent =
+            `${indicatorResult.ema20} / ${indicatorResult.ema50} / ${indicatorResult.ema200}`;
+    }
+
+    if (rsiValue) {
+        rsiValue.textContent = indicatorResult.rsi;
+    }
+
+    if (macdValue) {
+        macdValue.textContent = indicatorResult.macd;
+    }
+
+    if (adxValue) {
+        adxValue.textContent = indicatorResult.adx;
+    }
+
+    if (atrValue) {
+        atrValue.textContent = indicatorResult.atr;
+    }
+
+    if (bbValue) {
+        bbValue.textContent =
+            `${indicatorResult.bollinger.upper} / ${indicatorResult.bollinger.middle} / ${indicatorResult.bollinger.lower}`;
+    }
+}
 if (signalAlert && allSignals.length) {
   signalAlert.hidden = false;
   signalAlert.innerHTML = allSignals
