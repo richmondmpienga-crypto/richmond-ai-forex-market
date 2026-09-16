@@ -186,6 +186,9 @@ setInterval(updateSignalAges, 1000);
     "wss://api.derivws.com/trading/v1/options/ws/public";
 
 function getDerivActiveSymbols() {
+
+
+        
     return new Promise((resolve, reject) => {
         const ws = new WebSocket(DERIV_WS_URL);
 
@@ -217,7 +220,19 @@ function getDerivActiveSymbols() {
         };
     });
 } 
+getDerivActiveSymbols()
+    .then((symbols) => {
+        const volatilitySymbols = symbols.filter((item) =>
+            String(item.display_name || item.symbol || "")
+                .toLowerCase()
+                .includes("volatility")
+        );
 
+        console.log("DERIV VOLATILITY SYMBOLS:", volatilitySymbols);
+    })
+    .catch((error) => {
+        console.error("Deriv symbol lookup failed:", error);
+    });
   function ema(values, period) {
     if (!values || values.length < period) return null;
 
