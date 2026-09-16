@@ -207,20 +207,30 @@ function getDerivActiveSymbols() {
             }
 
             if (data.msg_type === "active_symbols") {
-                ws.close();
-                resolve(data.active_symbols || []);
-            }
-        };
+    resolve(data.active_symbols || []);
+
+    setTimeout(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.close();
+        }
+    }, 100);
+}
 
         ws.onerror = () => {
-            reject(new Error("Deriv WebSocket connection failed"));
-        };
+    reject(new Error("Deriv WebSocket connection failed"));
+};
+
     });
-} 
+}
+
 getDerivActiveSymbols()
     .then((symbols) => {
         const volatilitySymbols = symbols.filter((item) =>
-            String(item.display_name || item.symbol || "")
+            String(
+                item.underlying_symbol_name ||
+                item.underlying_symbol ||
+                ""
+            )
                 .toLowerCase()
                 .includes("volatility")
         );
