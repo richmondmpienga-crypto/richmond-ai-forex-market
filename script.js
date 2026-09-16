@@ -254,6 +254,7 @@ getDerivActiveSymbols()
     .catch((error) => {
         console.error("Deriv symbol lookup failed:", error);
     });
+  function ema(values, period) {
     if (!values || values.length < period) return null;
 
     const multiplier = 2 / (period + 1);
