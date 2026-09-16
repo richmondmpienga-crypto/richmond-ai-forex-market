@@ -469,6 +469,9 @@ body > * {
 .sell-text {
   color: #ff5c5c;
 }
+.signal-item {
+    white-space: nowrap;
+}
 @media (max-width: 768px) {
   body::before {
     background-size: 360px auto;
