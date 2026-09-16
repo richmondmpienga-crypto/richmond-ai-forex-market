@@ -737,6 +737,14 @@ if (cells[9]) cells[9].textContent = "WAIT";
   }
 
   scanBtn.addEventListener("click", async () => {
+    if (currentMarketMode === "deriv") {
+    if (aiAnalysis) {
+        aiAnalysis.textContent =
+            "Deriv Volatility scanner is being connected to Deriv market data.";
+    }
+
+    return;
+}
     scanBtn.disabled = true;
     scanBtn.textContent = "Scanning Market...";
 if (signalAlert) {
