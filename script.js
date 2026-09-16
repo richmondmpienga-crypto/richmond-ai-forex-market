@@ -190,6 +190,46 @@ const DERIV_SYMBOL_MAP = {
     "Volatility 50 Index": "R_50",
     "Volatility 75 Index": "R_75"
 };
+  function getDerivCandles(symbol, count = 250, granularity = 900) {
+    return new Promise((resolve, reject) => {
+        const ws = new WebSocket(DERIV_WS_URL);
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                ticks_history: symbol,
+                style: "candles",
+                count,
+                end: "latest",
+                granularity,
+                req_id: 2
+            }));
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            if (data.error) {
+                ws.close();
+                reject(new Error(data.error.message));
+                return;
+            }
+
+            if (data.msg_type === "candles") {
+                resolve(data.candles || []);
+
+                setTimeout(() => {
+                    if (ws.readyState === WebSocket.OPEN) {
+                        ws.close();
+                    }
+                }, 100);
+            }
+        };
+
+        ws.onerror = () => {
+            reject(new Error("Deriv candle connection failed"));
+        };
+    });
+}
 function getDerivActiveSymbols() {
 return new Promise((resolve, reject) => {
 
