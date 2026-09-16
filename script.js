@@ -1049,15 +1049,15 @@ sortedRows.forEach((row) => scannerBody.appendChild(row));
 scannerBody.querySelectorAll("tr").forEach((row) => {
   row.style.cursor = "pointer";
 
-  row.addEventListener("click", () => {
-    const cells = row.querySelectorAll("td");
-    if (!cells.length) return;
+  const symbol = cells[0].textContent.trim();
 
-    const symbol = cells[0].textContent.trim();
-   
-  window.location.href =
-    `pair.html?symbol=${encodeURIComponent(symbol)}&market=${encodeURIComponent(currentMarketMode)}`;
-return;
+const pairMarket =
+    symbol.startsWith("Volatility ")
+        ? "deriv"
+        : "forex";
+
+window.location.href =
+    `pair.html?symbol=${encodeURIComponent(symbol)}&market=${encodeURIComponent(pairMarket)}`;
     const analysis = pairResults[symbol];
 
     if (!analysis) return;
