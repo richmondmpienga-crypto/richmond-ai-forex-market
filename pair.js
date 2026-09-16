@@ -519,54 +519,116 @@ if (strongBuySetup) {
     return value.toFixed(5);
   }
 
-  function loadTradingView() {
-  const container = document.getElementById("tradingviewChart");
+  async function loadTradingView() {
+    const container = document.getElementById("tradingviewChart");
 
-  if (!container) return;
+    if (!container) return;
 
-  container.innerHTML = "";
+    container.innerHTML = "";
 
-  const widgetContainer = document.createElement("div");
-  widgetContainer.className = "tradingview-widget-container";
-  widgetContainer.style.height = "100%";
-  widgetContainer.style.width = "100%";
+    // DERIV CHART
+    if (market === "deriv") {
+        const derivSymbol = derivApiSymbols[symbol];
 
-  const widget = document.createElement("div");
-  widget.className = "tradingview-widget-container__widget";
-  widget.style.height = "100%";
-  widget.style.width = "100%";
+        if (!derivSymbol) {
+            container.innerHTML = "Unable to load Deriv chart.";
+            return;
+        }
 
-  const script = document.createElement("script");
+        try {
+            const candles = await getDerivCandles(
+                derivSymbol,
+                selectedInterval
+            );
 
-  script.src =
-    "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+            const chart = LightweightCharts.createChart(container, {
+                width: container.clientWidth,
+                height: 470,
+                layout: {
+                    background: { color: "#0d1b2f" },
+                    textColor: "#d1d5db"
+                },
+                grid: {
+                    vertLines: { color: "#1d3858" },
+                    horzLines: { color: "#1d3858" }
+                },
+                timeScale: {
+                    timeVisible: true,
+                    secondsVisible: false
+                }
+            });
 
-  script.type = "text/javascript";
-  script.async = true;
+            const candleSeries = chart.addCandlestickSeries({
+                upColor: "#00c896",
+                downColor: "#ff4d4d",
+                borderVisible: false,
+                wickUpColor: "#00c896",
+                wickDownColor: "#ff4d4d"
+            });
 
-  script.innerHTML = JSON.stringify({
-    autosize: true,
-   symbol:
-    market === "deriv"
-        ? derivTradingViewSymbols[symbol]
-        : tradingViewSymbols[symbol] || "OANDA:XAUUSD",
-    interval:
-      tradingViewIntervals[selectedInterval] ||
-      "15",
-    timezone: "Etc/UTC",
-    theme: "dark",
-    style: "1",
-    locale: "en",
-    backgroundColor: "#0d1b2f",
-    allow_symbol_change: false,
-    save_image: false,
-    calendar: false,
-    support_host: "https://www.tradingview.com"
-  });
+            candleSeries.setData(
+                candles
+                    .map((candle) => ({
+                        time: Number(candle.epoch),
+                        open: Number(candle.open),
+                        high: Number(candle.high),
+                        low: Number(candle.low),
+                        close: Number(candle.close)
+                    }))
+                    .sort((a, b) => a.time - b.time)
+            );
 
-  widgetContainer.appendChild(widget);
-  widgetContainer.appendChild(script);
-  container.appendChild(widgetContainer);
+            chart.timeScale().fitContent();
+
+            return;
+        } catch (error) {
+            console.error("Deriv chart failed:", error);
+            container.innerHTML = "Unable to load Deriv chart.";
+            return;
+        }
+    }
+
+    // FOREX TRADINGVIEW CHART
+    const widgetContainer = document.createElement("div");
+    widgetContainer.className = "tradingview-widget-container";
+    widgetContainer.style.height = "100%";
+    widgetContainer.style.width = "100%";
+
+    const widget = document.createElement("div");
+    widget.className = "tradingview-widget-container__widget";
+    widget.style.height = "100%";
+    widget.style.width = "100%";
+
+    const script = document.createElement("script");
+
+    script.src =
+        "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+
+    script.type = "text/javascript";
+    script.async = true;
+
+    script.innerHTML = JSON.stringify({
+        autosize: true,
+        symbol:
+            tradingViewSymbols[symbol] ||
+            "OANDA:XAUUSD",
+        interval:
+            tradingViewIntervals[selectedInterval] ||
+            "15",
+        timezone: "Etc/UTC",
+        theme: "dark",
+        style: "1",
+        locale: "en",
+        backgroundColor: "#0d1b2f",
+        allow_symbol_change: false,
+        save_image: false,
+        calendar: false,
+        support_host: "https://www.tradingview.com"
+    });
+
+    widgetContainer.appendChild(widget);
+    widgetContainer.appendChild(script);
+    container.appendChild(widgetContainer);
 }
 
   async function loadAnalysis() {
