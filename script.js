@@ -648,13 +648,22 @@ if (weekendClosed) {
   };
 }
     cells[1].textContent = "Scanning...";
-    cells[2].textContent = "Scanning...";
-    cells[3].textContent = "...";
-    cells[4].textContent = "...";
-    cells[5].textContent = "...";
-    cells[6].textContent = "...";
-    cells[7].textContent = "...";
-    cells[8].textContent = "WAIT";
+cells[2].textContent = "Scanning...";
+cells[3].textContent = "...";
+cells[4].textContent = "...";
+cells[5].textContent = "...";
+cells[6].textContent = "...";
+cells[7].textContent = "...";
+cells[8].textContent = "SCANNING";
+
+if (cells[9]) {
+    cells[9].textContent = "SCANNING";
+}
+
+if (cells[10]) {
+    cells[10].textContent = "--";
+    delete cells[10].dataset.updatedAt;
+}
 
     try {
      let data;
