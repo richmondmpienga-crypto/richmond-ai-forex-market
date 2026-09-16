@@ -186,7 +186,7 @@ setInterval(updateSignalAges, 1000);
     "wss://api.derivws.com/trading/v1/options/ws/public";
 
 function getDerivActiveSymbols() {
-
+return new Promise((resolve, reject) => {
 
         
     const ws = new WebSocket(DERIV_WS_URL);
