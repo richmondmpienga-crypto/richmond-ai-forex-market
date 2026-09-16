@@ -839,7 +839,30 @@ if (signalAlert) {
     const rows = Array.from(
       scannerBody.querySelectorAll("tr")
     );
+rows.forEach((row) => {
+    const cells = row.querySelectorAll("td");
+    if (!cells.length) return;
 
+    cells[1].textContent = "Scanning...";
+    cells[2].textContent = "Scanning...";
+    cells[3].textContent = "...";
+    cells[4].textContent = "...";
+    cells[5].textContent = "...";
+    cells[6].textContent = "...";
+    cells[7].textContent = "...";
+    cells[8].textContent = "SCANNING";
+    cells[8].style.color = "";
+
+    if (cells[9]) {
+        cells[9].textContent = "SCANNING";
+        cells[9].style.color = "";
+    }
+
+    if (cells[10]) {
+        cells[10].textContent = "--";
+        delete cells[10].dataset.updatedAt;
+    }
+});
     const results = [];
 
     for (const row of rows) {
