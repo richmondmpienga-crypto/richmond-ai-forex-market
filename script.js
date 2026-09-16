@@ -1055,7 +1055,8 @@ scannerBody.querySelectorAll("tr").forEach((row) => {
 
     const symbol = cells[0].textContent.trim();
     window.location.href =
-  `pair.html?symbol=${encodeURIComponent(symbol)}`;
+  window.location.href =
+    `pair.html?symbol=${encodeURIComponent(symbol)}&market=${encodeURIComponent(currentMarketMode)}`;
 return;
     const analysis = pairResults[symbol];
 
