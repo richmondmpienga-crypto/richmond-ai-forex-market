@@ -1,5 +1,6 @@
 const params = new URLSearchParams(window.location.search);
 const symbol = params.get("symbol") || "XAU/USD";
+const market = params.get("market") || "forex";
 
 let selectedInterval = "15min";
 
