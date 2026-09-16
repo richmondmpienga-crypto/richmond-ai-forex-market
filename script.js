@@ -908,7 +908,12 @@ if (signalAlert && allSignals.length) {
     else if (r.score <= 25) strength = "STRONG";
   }
 
-  return `${r.symbol} <span class="${colorClass}">${r.signal}</span> • ${r.score}% • ${strength}`;
+  const confidence =
+    r.signal === "SELL"
+        ? 100 - r.score
+        : r.score;
+
+return `${r.symbol} <span class="${colorClass}">${r.signal}</span> • ${confidence}% • ${strength}`;
 })
   .join(" &nbsp; | &nbsp; ");
 
