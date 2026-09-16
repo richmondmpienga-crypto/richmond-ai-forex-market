@@ -230,13 +230,7 @@ const DERIV_SYMBOL_MAP = {
         };
     });
 }
-  getDerivCandles("R_10")
-    .then((candles) => {
-        console.log("R_10 CANDLES:", candles.length, candles.slice(-3));
-    })
-    .catch((error) => {
-        console.error("R_10 candle test failed:", error);
-    });
+  
 function getDerivActiveSymbols() {
 
 return new Promise((resolve, reject) => {
@@ -691,15 +685,39 @@ if (weekendClosed) {
     cells[8].textContent = "WAIT";
 
     try {
-      const response = await fetch(
+     let data;
+
+if (currentMarketMode === "deriv") {
+    const derivSymbol = DERIV_SYMBOL_MAP[symbol];
+
+    if (!derivSymbol) {
+        throw new Error(`Unknown Deriv symbol: ${symbol}`);
+    }
+
+    const candles = await getDerivCandles(derivSymbol);
+
+    data = {
+        values: candles
+            .map((candle) => ({
+                datetime: new Date(Number(candle.epoch) * 1000).toISOString(),
+                open: Number(candle.open),
+                high: Number(candle.high),
+                low: Number(candle.low),
+                close: Number(candle.close)
+            }))
+            .reverse()
+    };
+} else {
+    const response = await fetch(
         `/api/forex?symbol=${encodeURIComponent(symbol)}`
-      );
+    );
 
-      if (!response.ok) {
+    if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
-      }
+    }
 
-      const data = await response.json();
+    data = await response.json();
+}
 
       if (!Array.isArray(data.values) || data.values.length === 0) {
   cells[1].textContent = "MARKET CLOSED";
