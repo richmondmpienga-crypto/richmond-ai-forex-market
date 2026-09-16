@@ -215,7 +215,7 @@ function getDerivActiveSymbols() {
         }
     }, 100);
 }
-
+};
         ws.onerror = () => {
     reject(new Error("Deriv WebSocket connection failed"));
 };
