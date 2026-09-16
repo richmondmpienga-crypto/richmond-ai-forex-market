@@ -558,14 +558,21 @@ if (strongBuySetup) {
                 }
             });
 
-            const candleSeries = chart.addCandlestickSeries({
-                upColor: "#00c896",
-                downColor: "#ff4d4d",
-                borderVisible: false,
-                wickUpColor: "#00c896",
-                wickDownColor: "#ff4d4d"
-            });
+            const candleOptions = {
+    upColor: "#00c896",
+    downColor: "#ff4d4d",
+    borderVisible: false,
+    wickUpColor: "#00c896",
+    wickDownColor: "#ff4d4d"
+};
 
+const candleSeries =
+    typeof chart.addCandlestickSeries === "function"
+        ? chart.addCandlestickSeries(candleOptions)
+        : chart.addSeries(
+            LightweightCharts.CandlestickSeries,
+            candleOptions
+        );
             candleSeries.setData(
                 candles
                     .map((candle) => ({
