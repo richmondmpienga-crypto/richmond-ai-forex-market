@@ -16,6 +16,64 @@ const derivTradingViewSymbols = {
     "Volatility 50 Index": "DERIV:R_50",
     "Volatility 75 Index": "DERIV:R_75"
 };
+const DERIV_WS_URL =
+    "wss://api.derivws.com/trading/v1/options/ws/public";
+
+const derivApiSymbols = {
+    "Volatility 10 Index": "R_10",
+    "Volatility 25 Index": "R_25",
+    "Volatility 50 Index": "R_50",
+    "Volatility 75 Index": "R_75"
+};
+
+const derivGranularities = {
+    "1min": 60,
+    "5min": 300,
+    "15min": 900,
+    "30min": 1800,
+    "1h": 3600,
+    "4h": 14400
+};
+function getDerivCandles(symbol, interval, count = 250) {
+    return new Promise((resolve, reject) => {
+        const ws = new WebSocket(DERIV_WS_URL);
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                ticks_history: symbol,
+                style: "candles",
+                count,
+                end: "latest",
+                granularity: derivGranularities[interval] || 900,
+                req_id: 2
+            }));
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            if (data.error) {
+                ws.close();
+                reject(new Error(data.error.message));
+                return;
+            }
+
+            if (data.msg_type === "candles") {
+                resolve(data.candles || []);
+
+                setTimeout(() => {
+                    if (ws.readyState === WebSocket.OPEN) {
+                        ws.close();
+                    }
+                }, 100);
+            }
+        };
+
+        ws.onerror = () => {
+            reject(new Error("Deriv candle connection failed"));
+        };
+    });
+}
 const tradingViewIntervals = {
   "1min": "1",
   "5min": "5",
@@ -515,18 +573,44 @@ if (strongBuySetup) {
     try {
       currentPrice.textContent = "Loading...";
 
-     const fetchTimeframe = async (interval) => {
-  const response = await fetch(
-    `/api/forex?symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(interval)}`
-  );
+   const fetchTimeframe = async (interval) => {
+    if (market === "deriv") {
+        const derivSymbol = derivApiSymbols[symbol];
 
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
+        if (!derivSymbol) {
+            throw new Error(`Unknown Deriv symbol: ${symbol}`);
+        }
 
-  return await response.json();
-};
+        const candles = await getDerivCandles(
+            derivSymbol,
+            interval
+        );
 
+        return {
+            values: candles
+                .map((candle) => ({
+                    datetime: new Date(
+                        Number(candle.epoch) * 1000
+                    ).toISOString(),
+                    open: Number(candle.open),
+                    high: Number(candle.high),
+                    low: Number(candle.low),
+                    close: Number(candle.close)
+                }))
+                .reverse()
+        };
+    }
+
+    const response = await fetch(
+        `/api/forex?symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(interval)}`
+    );
+
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+    }
+
+    return await response.json();
+}; 
 const [trendData, setupData, confirmationData] = await Promise.all([
   fetchTimeframe("1h"),
   fetchTimeframe(selectedInterval),
