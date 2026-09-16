@@ -230,7 +230,15 @@ const DERIV_SYMBOL_MAP = {
         };
     });
 }
+  getDerivCandles("R_10")
+    .then((candles) => {
+        console.log("R_10 CANDLES:", candles.length, candles.slice(-3));
+    })
+    .catch((error) => {
+        console.error("R_10 candle test failed:", error);
+    });
 function getDerivActiveSymbols() {
+
 return new Promise((resolve, reject) => {
 
         
