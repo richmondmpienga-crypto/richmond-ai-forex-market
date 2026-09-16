@@ -189,15 +189,15 @@ function getDerivActiveSymbols() {
 
 
         
-    return new Promise((resolve, reject) => {
-        const ws = new WebSocket(DERIV_WS_URL);
+    const ws = new WebSocket(DERIV_WS_URL);
 
-        ws.send(JSON.stringify({
-    active_symbols: "brief",
-    req_id: 1
-}));
-
-        ws.onmessage = (event) => {
+ws.onopen = () => {
+    ws.send(JSON.stringify({
+        active_symbols: "brief",
+        req_id: 1
+    }));
+};
+  ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
 
             if (data.error) {
