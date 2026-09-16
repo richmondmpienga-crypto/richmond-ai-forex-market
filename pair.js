@@ -10,7 +10,12 @@ const tradingViewSymbols = {
 "USD/JPY": "OANDA:USDJPY",
 "XAU/USD": "OANDA:XAUUSD"
 };
-
+const derivTradingViewSymbols = {
+    "Volatility 10 Index": "DERIV:R_10",
+    "Volatility 25 Index": "DERIV:R_25",
+    "Volatility 50 Index": "DERIV:R_50",
+    "Volatility 75 Index": "DERIV:R_75"
+};
 const tradingViewIntervals = {
   "1min": "1",
   "5min": "5",
@@ -483,9 +488,10 @@ if (strongBuySetup) {
 
   script.innerHTML = JSON.stringify({
     autosize: true,
-    symbol:
-      tradingViewSymbols[symbol] ||
-      "OANDA:XAUUSD",
+   symbol:
+    market === "deriv"
+        ? derivTradingViewSymbols[symbol]
+        : tradingViewSymbols[symbol] || "OANDA:XAUUSD",
     interval:
       tradingViewIntervals[selectedInterval] ||
       "15",
