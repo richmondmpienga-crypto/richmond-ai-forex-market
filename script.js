@@ -235,12 +235,25 @@ getDerivActiveSymbols()
                 .includes("volatility")
         );
 
-        console.log("DERIV VOLATILITY SYMBOLS:", volatilitySymbols);
+        console.table(
+            volatilitySymbols
+                .filter((x) =>
+                    [
+                        "Volatility 10 Index",
+                        "Volatility 25 Index",
+                        "Volatility 50 Index",
+                        "Volatility 75 Index"
+                    ].includes(x.underlying_symbol_name)
+                )
+                .map((x) => ({
+                    name: x.underlying_symbol_name,
+                    symbol: x.underlying_symbol
+                }))
+        );
     })
     .catch((error) => {
         console.error("Deriv symbol lookup failed:", error);
     });
-  function ema(values, period) {
     if (!values || values.length < period) return null;
 
     const multiplier = 2 / (period + 1);
