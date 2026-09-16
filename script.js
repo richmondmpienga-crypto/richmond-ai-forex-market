@@ -182,7 +182,41 @@ updateTradingSessions();
 }
 
 setInterval(updateSignalAges, 1000); 
-    new Promise((resolve) => setTimeout(resolve, ms));
+  const DERIV_WS_URL =
+    "wss://api.derivws.com/trading/v1/options/ws/public";
+
+function getDerivActiveSymbols() {
+    return new Promise((resolve, reject) => {
+        const ws = new WebSocket(DERIV_WS_URL);
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                active_symbols: "brief",
+                product_type: "basic",
+                req_id: 1
+            }));
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            if (data.error) {
+                ws.close();
+                reject(new Error(data.error.message));
+                return;
+            }
+
+            if (data.msg_type === "active_symbols") {
+                ws.close();
+                resolve(data.active_symbols || []);
+            }
+        };
+
+        ws.onerror = () => {
+            reject(new Error("Deriv WebSocket connection failed"));
+        };
+    });
+} 
 
   function ema(values, period) {
     if (!values || values.length < period) return null;
