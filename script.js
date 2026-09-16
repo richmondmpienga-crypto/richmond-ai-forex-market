@@ -766,7 +766,14 @@ previousSignals[symbol] = analysis.signal;
   signalAlert.classList.add(analysis.signal.toLowerCase());
 }
 }
-    
+ cells[1].textContent = analysis.trend;
+cells[2].textContent = analysis.structure;
+cells[3].textContent = analysis.bos;
+cells[4].textContent = analysis.liquidity;
+cells[5].textContent = analysis.orderBlock;
+cells[6].textContent = analysis.volatility;
+cells[7].textContent = analysis.score;
+cells[8].textContent = analysis.signal;   
       if (analysis.signal === "BUY") {
         cells[8].style.color = "#00d084";
       } else if (analysis.signal === "SELL") {
