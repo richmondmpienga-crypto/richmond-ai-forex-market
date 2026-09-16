@@ -184,7 +184,12 @@ updateTradingSessions();
 setInterval(updateSignalAges, 1000); 
   const DERIV_WS_URL =
     "wss://api.derivws.com/trading/v1/options/ws/public";
-
+const DERIV_SYMBOL_MAP = {
+    "Volatility 10 Index": "R_10",
+    "Volatility 25 Index": "R_25",
+    "Volatility 50 Index": "R_50",
+    "Volatility 75 Index": "R_75"
+};
 function getDerivActiveSymbols() {
 return new Promise((resolve, reject) => {
 
