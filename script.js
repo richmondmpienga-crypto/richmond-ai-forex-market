@@ -975,7 +975,7 @@ if (signalAlert && allSignals.length) {
         ? 100 - r.score
         : r.score;
 
-return `${r.symbol} <span class="${colorClass}">${r.signal}</span> • ${confidence}% • ${strength}`;
+return `<span class="signal-item">${r.symbol} <span class="${colorClass}">${r.signal}</span> • ${confidence}% • ${strength}</span>`;
 })
   .join(" &nbsp; | &nbsp; ");
 
