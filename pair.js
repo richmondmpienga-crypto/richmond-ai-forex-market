@@ -748,10 +748,13 @@ const multiTimeframeScore = Math.round(
     : result.adx >= 15
     ? -10
     : -20;
-
+const alignmentBonus =
+  directionAligned
+    ? 20
+    : 0;
 const adjustedMultiTimeframeScore = Math.max(
   0,
-  Math.min(100, multiTimeframeScore + adxAdjustment)
+  Math.min(100, multiTimeframeScore + adxAdjustment + alignmentBonus)
 );
 const entry = result.price;
 
