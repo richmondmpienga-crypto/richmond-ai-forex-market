@@ -583,13 +583,29 @@ const bollinger = calculateBollingerBands(closes, 20, 2);
     // Prevent score exceeding 0-100
     score = Math.max(0, Math.min(100, Math.round(score)));
 
-    let signal = "WAIT";
+   let signal = "WAIT";
 
-    if (score >= 70) {
-      signal = "BUY";
-    } else if (score <= 30) {
-      signal = "SELL";
-    }
+const bullishConfirmed =
+  score >= 70 &&
+  trend === "BULLISH" &&
+  (
+    bos === "BULLISH BOS" ||
+    structure === "HH / HL"
+  );
+
+const bearishConfirmed =
+  score <= 30 &&
+  trend === "BEARISH" &&
+  (
+    bos === "BEARISH BOS" ||
+    structure === "LH / LL"
+  );
+
+if (bullishConfirmed) {
+  signal = "BUY";
+} else if (bearishConfirmed) {
+  signal = "SELL";
+}
 
    return {
   trend,
