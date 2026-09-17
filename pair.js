@@ -876,35 +876,42 @@ waitingForValue.textContent = waitingForText;
       volatilityValue.textContent =
         result.volatility;
 entryValue.textContent = formatPrice(entry);
+const isDeriv = market === "deriv";
+
 const pipSize =
-    symbol === "XAU/USD"
-        ? 0.01
-        : symbol.includes("JPY")
-            ? 0.01
-            : 0.0001;
+  symbol === "XAU/USD"
+    ? 0.01
+    : symbol.includes("JPY")
+    ? 0.01
+    : 0.0001;
 
-const stopLossPips =
-    Math.abs(entry - stopLoss) / pipSize;
+const stopLossPips = isDeriv
+  ? Math.abs(entry - stopLoss)
+  : Math.abs(entry - stopLoss) / pipSize;
 
-const tp1Pips =
-    Math.abs(tp1 - entry) / pipSize;
+const tp1Pips = isDeriv
+  ? Math.abs(tp1 - entry)
+  : Math.abs(tp1 - entry) / pipSize;
 
-const tp2Pips =
-    Math.abs(tp2 - entry) / pipSize;
+const tp2Pips = isDeriv
+  ? Math.abs(tp2 - entry)
+  : Math.abs(tp2 - entry) / pipSize;
+
+const distanceLabel = isDeriv ? "points" : "pips";
 stopLossValue.textContent =
     confirmedSignal === "WAIT"
         ? "--"
-        : `${formatPrice(stopLoss)} (${stopLossPips.toFixed(1)} pips)`;
+       : `${formatPrice(stopLoss)} (${stopLossPips.toFixed(1)} ${distanceLabel})`;
 
 tp1Value.textContent =
     confirmedSignal === "WAIT"
         ? "--"
-        : `${formatPrice(tp1)} (${tp1Pips.toFixed(1)} pips)`;
+       : `${formatPrice(tp1)} (${tp1Pips.toFixed(1)} ${distanceLabel})`;
 
 tp2Value.textContent =
     confirmedSignal === "WAIT"
         ? "--"
-        : `${formatPrice(tp2)} (${tp2Pips.toFixed(1)} pips)`;
+       : `${formatPrice(tp2)} (${tp2Pips.toFixed(1)} ${distanceLabel})`;
 
 riskRewardValue.textContent = riskReward;
 
