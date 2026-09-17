@@ -805,7 +805,7 @@ cells[8].textContent = analysis.signal;
         cells[8].style.color = "#ff4d4d";
       } else {
         cells[8].style.color = "#ffb000";
-      }
+      
 if (cells[9]) {
     let readiness = "WAIT";
 
