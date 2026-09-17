@@ -785,6 +785,7 @@ ${result.structure === "HH / HL" ? "✓" : "✗"} ${selectedInterval} Structure:
 ${result.score >= 70 ? "✓" : "✗"} ${selectedInterval} Score: ${result.score} / 100
 ${result.macd > 0 ? "✓" : "✗"} MACD: ${result.macd.toFixed(5)}
 ${result.rsi >= 50 && result.rsi < 75 ? "✓" : "✗"} RSI: ${result.rsi.toFixed(1)}
+${result.adx >= 20 ? "✓" : "✕"} ADX: ${result.adx.toFixed(1)} ${result.adx >= 20 ? "STRONG" : "WEAK"}
 ${entryTrend === "BULLISH" ? "✓" : "✗"} 5M Confirmation: ${entryTrend}
 STATUS: WAIT`
     : higherTrend === "BEARISH" && entryTrend === "BEARISH"
@@ -793,6 +794,7 @@ ${higherTrend === "BEARISH" ? "✓" : "✗"} 1H Trend: ${higherTrend}
 ${result.structure === "LH / LL" ? "✓" : "✗"} ${selectedInterval} Structure: ${result.structure}
 ${result.score <= 30 ? "✓" : "✗"} ${selectedInterval} Score: ${result.score} / 100
 ${result.macd < 0 ? "✓" : "✗"} MACD: ${result.macd.toFixed(5)}
+${result.adx >= 20 ? "✓" : "✕"} ADX: ${result.adx.toFixed(1)} ${result.adx >= 20 ? "STRONG" : "WEAK"}
 ${result.rsi <= 50 && result.rsi > 25 ? "✓" : "✗"} RSI: ${result.rsi.toFixed(1)}
 ${entryTrend === "BEARISH" ? "✓" : "✗"} 5M Confirmation: ${entryTrend}
 STATUS: WAIT`
