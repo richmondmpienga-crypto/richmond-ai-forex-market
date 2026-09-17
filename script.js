@@ -477,32 +477,34 @@ const bollinger = calculateBollingerBands(closes, 20, 2);
 
     // MARKET STRUCTURE
     const recentHighs = highs.slice(-6);
-    const recentLows = lows.slice(-6);
+const recentLows = lows.slice(-6);
 
-    const previousHigh = Math.max(...recentHighs.slice(0, -1));
-    const previousLow = Math.min(...recentLows.slice(0, -1));
+const currentHigh = highs[lastIndex];
+const currentLow = lows[lastIndex];
 
-    const currentHigh = highs[lastIndex];
-    const currentLow = lows[lastIndex];
+const high3Ago = highs[lastIndex - 3];
+const low3Ago = lows[lastIndex - 3];
 
-    let structure = "RANGING";
-    let bos = "NONE";
+let structure = "RANGING";
+let bos = "NONE";
 
-    if (
-      currentHigh > previousHigh &&
-      currentClose > previousClose
-    ) {
-      structure = "HH / HL";
-      bos = "BULLISH BOS";
-      score += 15;
-    } else if (
-      currentLow < previousLow &&
-      currentClose < previousClose
-    ) {
-      structure = "LH / LL";
-      bos = "BEARISH BOS";
-      score -= 15;
-    }
+if (
+    currentHigh > high3Ago &&
+    currentLow > low3Ago &&
+    currentClose > previousClose
+) {
+    structure = "HH / HL";
+    bos = "BULLISH BOS";
+    score += 15;
+} else if (
+    currentHigh < high3Ago &&
+    currentLow < low3Ago &&
+    currentClose < previousClose
+) {
+    structure = "LH / LL";
+    bos = "BEARISH BOS";
+    score -= 15;
+}
 
     // LIQUIDITY
     const lookbackHigh = Math.max(...highs.slice(-20, -1));
