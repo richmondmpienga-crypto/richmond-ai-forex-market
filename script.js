@@ -842,7 +842,7 @@ if (readiness === "DEVELOPING" || readiness === "WAIT") {
         : readiness === "DEVELOPING"
         ? "#ffb000"
         : "#ffb000";
-}
+
       return {
         symbol,
         ...analysis
