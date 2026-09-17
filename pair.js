@@ -733,9 +733,16 @@ if (
 const multiTimeframeScore = Math.round(
   (trendResult.score + result.score + confirmationResult.score) / 3
 );
+  const directionAligned =
+  (higherTrend === "BULLISH" &&
+    entryTrend === "BULLISH" &&
+    result.trend === "BULLISH") ||
+  (higherTrend === "BEARISH" &&
+    entryTrend === "BEARISH" &&
+    result.trend === "BEARISH");  
      const adxAdjustment =
   result.adx >= 25
-    ? 5
+ ? (directionAligned ? 5 : 0)
     : result.adx >= 20
     ? 0
     : result.adx >= 15
