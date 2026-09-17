@@ -733,6 +733,19 @@ if (
 const multiTimeframeScore = Math.round(
   (trendResult.score + result.score + confirmationResult.score) / 3
 );
+     const adxAdjustment =
+  result.adx >= 25
+    ? 5
+    : result.adx >= 20
+    ? 0
+    : result.adx >= 15
+    ? -10
+    : -20;
+
+const adjustedMultiTimeframeScore = Math.max(
+  0,
+  Math.min(100, multiTimeframeScore + adxAdjustment)
+);
 const entry = result.price;
 
 let stopLoss = entry;
@@ -809,7 +822,7 @@ waitingForValue.textContent = waitingForText;
         formatPrice(result.price);
 
       aiScore.textContent =
-     `${multiTimeframeScore} / 100`;
+     `${adjustedMultiTimeframeScore} / 100`;
 
       signalValue.textContent =
         confirmedSignal;
@@ -953,7 +966,7 @@ if (tradeSummaryCard) {
   }
 }
 confidenceValue.textContent =
-  `${multiTimeframeScore} / 100`;
+  `${adjustedMultiTimeframeScore} / 100`;
 directionValue.textContent =
   confirmedSignal;
 
