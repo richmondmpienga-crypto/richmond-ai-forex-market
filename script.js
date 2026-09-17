@@ -607,6 +607,11 @@ const bearishConfirmed =
     structure === "LH / LL"
   );
 
+    if (bullishConfirmed) {
+    signal = "BUY";
+} else if (bearishConfirmed) {
+    signal = "SELL";
+}
    return {
   trend,
   structure,
