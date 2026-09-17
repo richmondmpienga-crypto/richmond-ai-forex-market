@@ -847,7 +847,7 @@ if (readiness === "DEVELOPING" || readiness === "WAIT") {
     symbol,
     ...analysis
 };
-}
+
 } catch (error) {
       console.error(`${symbol} scan failed:`, error);
 
