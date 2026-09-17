@@ -832,6 +832,7 @@ if (readiness === "DEVELOPING" || readiness === "WAIT") {
     cells[9].textContent = readiness;
   if (cells[10]) {
   cells[10].textContent = whyWait;
+ }   
 }
  if (cells[11]) {
   cells[11].textContent = "Just now";
