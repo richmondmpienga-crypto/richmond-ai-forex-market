@@ -1044,53 +1044,22 @@ const sortedRows = Array.from(scannerBody.querySelectorAll("tr"))
 
 sortedRows.forEach((row) => scannerBody.appendChild(row));
   });
-  const pairResults = {};
-
-scannerBody.querySelectorAll("tr").forEach((row) => {
+  scannerBody.querySelectorAll("tr").forEach((row) => {
   row.style.cursor = "pointer";
 
-  const symbol = cells[0].textContent.trim();
+  row.addEventListener("click", () => {
+    const cells = row.querySelectorAll("td");
+    const symbol = cells[0]?.textContent.trim();
 
-const pairMarket =
-    symbol.startsWith("Volatility ")
+    if (!symbol) return;
+
+    const pairMarket =
+      symbol.startsWith("Volatility ")
         ? "deriv"
         : "forex";
 
-window.location.href =
-    `pair.html?symbol=${encodeURIComponent(symbol)}&market=${encodeURIComponent(pairMarket)}`;
-    const analysis = pairResults[symbol];
-
-    if (!analysis) return;
-
-    if (indicatorTitle) {
-      indicatorTitle.textContent = `Technical Indicators — ${symbol}`;
-    }
-
-    if (emaValue) {
-      emaValue.textContent =
-        `${analysis.ema20} / ${analysis.ema50} / ${analysis.ema200}`;
-    }
-
-    if (rsiValue) {
-      rsiValue.textContent = analysis.rsi;
-    }
-
-    if (macdValue) {
-      macdValue.textContent = analysis.macd;
-    }
-
-    if (adxValue) {
-      adxValue.textContent = analysis.adx;
-    }
-
-    if (atrValue) {
-      atrValue.textContent = analysis.atr;
-    }
-
-    if (bbValue) {
-      bbValue.textContent =
-        `${analysis.bollinger.upper} / ${analysis.bollinger.middle} / ${analysis.bollinger.lower}`;
-    }
+    window.location.href =
+      `pair.html?symbol=${encodeURIComponent(symbol)}&market=${encodeURIComponent(pairMarket)}`;
   });
 });
 if (logoutButton) {
