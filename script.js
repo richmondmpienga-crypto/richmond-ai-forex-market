@@ -843,10 +843,12 @@ if (readiness === "DEVELOPING" || readiness === "WAIT") {
         ? "#ffb000"
         : "#ffb000";
 
-     return {
+    return {
     symbol,
     ...analysis
 };
+}
+}
 } catch (error) {
       console.error(`${symbol} scan failed:`, error);
 
