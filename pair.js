@@ -468,7 +468,8 @@ const strongBuySetup =
   bullishStructure &&
   rsi >= 50 &&
   rsi < 75 &&
-  macd > 0;
+  macd > 0 &&
+  adx >= 20;
 
 const strongSellSetup =
   score <= 30 &&
@@ -476,7 +477,8 @@ const strongSellSetup =
   bearishStructure &&
   rsi <= 50 &&
   rsi > 25 &&
-  macd < 0;
+  macd < 0 &&
+  adx >= 20;
 
 if (strongBuySetup) {
   signal = "BUY";
