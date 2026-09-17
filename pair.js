@@ -738,12 +738,13 @@ let tp1 = entry;
 let tp2 = entry;
 
 const minimumRiskDistance =
-    symbol === "XAU/USD"
-        ? 3.0
-        : symbol.includes("JPY")
-            ? 0.10
-            : 0.0010;
-
+  market === "deriv"
+    ? 1.0
+    : symbol === "XAU/USD"
+    ? 3.0
+    : symbol.includes("JPY")
+    ? 0.10
+    : 0.0010;
 const riskDistance = Math.max(
     result.atr * 1.5,
     minimumRiskDistance
