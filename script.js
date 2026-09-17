@@ -814,11 +814,27 @@ if (cells[9]) {
     } else if (analysis.score >= 60 || analysis.score <= 40) {
         readiness = "DEVELOPING";
     }
+let whyWait = "--";
 
+if (readiness === "DEVELOPING" || readiness === "WAIT") {
+    if (analysis.structure === "RANGING") {
+        whyWait = "Ranging";
+    } else if (analysis.bos === "NONE") {
+        whyWait = "No BOS";
+    } else if (analysis.adx < 20) {
+        whyWait = "Weak Trend";
+    } else {
+        whyWait = "Waiting Confirmation";
+    }
+}
+}
     cells[9].textContent = readiness;
   if (cells[10]) {
-    cells[10].textContent = "Just now";
-    cells[10].dataset.updatedAt = Date.now();
+  cells[10].textContent = whyWait;
+}
+ if (cells[11]) {
+  cells[11].textContent = "Just now";
+  cells[11].dataset.updatedAt = Date.now();
 }
   cells[9].style.color =
     readiness === "READY"
@@ -843,9 +859,14 @@ if (cells[9]) {
       cells[7].textContent = "0";
       cells[8].textContent = "WAIT";
 if (cells[9]) cells[9].textContent = "WAIT";
-      if (cells[10]) {
-    cells[10].textContent = "--";
-    delete cells[10].dataset.updatedAt;
+
+if (cells[10]) {
+  cells[10].textContent = "Data Error";
+}
+
+if (cells[11]) {
+  cells[11].textContent = "--";
+  delete cells[11].dataset.updatedAt;
 }
       return {
         symbol,
