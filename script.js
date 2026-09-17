@@ -934,11 +934,11 @@ rows.forEach((row) => {
     }
 
     const buySignals = results.filter(
-      (r) => r.signal === "BUY"
+    (r) => r && r.signal === "BUY"
     );
 
     const sellSignals = results.filter(
-      (r) => r.signal === "SELL"
+     (r) => r && r.signal === "SELL"
     );
 const allSignals = [...buySignals, ...sellSignals];
 const validResults = results.filter((r) => !r.error);
