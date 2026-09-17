@@ -826,8 +826,8 @@ if (readiness === "DEVELOPING" || readiness === "WAIT") {
     } else {
         whyWait = "Waiting Confirmation";
     }
-}
-}
+
+
     cells[9].textContent = readiness;
   if (cells[10]) {
   cells[10].textContent = whyWait;
