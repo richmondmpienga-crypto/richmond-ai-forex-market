@@ -585,9 +585,14 @@ const bollinger = calculateBollingerBands(closes, 20, 2);
 
    let signal = "WAIT";
 
+
+
+
+
 const bullishConfirmed =
   score >= 70 &&
   trend === "BULLISH" &&
+  adx >= 20 &&
   (
     bos === "BULLISH BOS" ||
     structure === "HH / HL"
@@ -596,16 +601,11 @@ const bullishConfirmed =
 const bearishConfirmed =
   score <= 30 &&
   trend === "BEARISH" &&
+  adx >= 20 &&
   (
     bos === "BEARISH BOS" ||
     structure === "LH / LL"
   );
-
-if (bullishConfirmed) {
-  signal = "BUY";
-} else if (bearishConfirmed) {
-  signal = "SELL";
-}
 
    return {
   trend,
