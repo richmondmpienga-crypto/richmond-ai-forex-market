@@ -597,7 +597,8 @@ const bullishConfirmed =
   adx >= 20 &&
   (
     bos === "BULLISH BOS" ||
-    structure === "HH / HL"
+    structure === "HH / HL" ||
+    (score >= 80 && orderBlock === "BULLISH")
   );
 
 const bearishConfirmed =
@@ -606,7 +607,8 @@ const bearishConfirmed =
   adx >= 20 &&
   (
     bos === "BEARISH BOS" ||
-    structure === "LH / LL"
+    structure === "LH / LL" ||
+    (score <= 20 && orderBlock === "BEARISH")
   );
 
     if (bullishConfirmed) {
