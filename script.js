@@ -843,12 +843,13 @@ if (readiness === "DEVELOPING" || readiness === "WAIT") {
         ? "#ffb000"
         : "#ffb000";
 
-   return {
+  return {
     symbol,
     ...analysis
 };
-} catch (error) {
+}
 
+} catch (error) {
       cells[1].textContent = "ERROR";
       cells[2].textContent = "No Data";
       cells[3].textContent = "—";
